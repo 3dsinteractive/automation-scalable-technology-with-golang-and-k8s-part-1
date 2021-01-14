@@ -8,4 +8,4 @@
 $ go version
 
 4. Terminal will display something like (according to your operating system and your Go version)
-# go version go1.14.4 darwin/amd64
+go version go1.14.4 darwin/amd64

@@ -11,11 +11,11 @@ $ cd chapter01-basic-knowledges/1.1-basic-golang/1.1.02-first-program
 
 5. Run command
 $ go mod init automationworkshop/main
-# go: creating new go.mod: module automationworkshop/main
+go: creating new go.mod: module automationworkshop/main
 
 6. Run command
 $ go run main.go
-# My First Program
+My First Program
 
 7. Run command
 $ cd ../../../

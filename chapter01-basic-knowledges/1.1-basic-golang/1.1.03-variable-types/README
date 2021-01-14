@@ -1,0 +1,59 @@
+1.1.03 Variables and Types
+
+1. Use VSCode to Open directory automation-scalable-technology-with-golang-and-k8s-part-1
+
+2. Open terminal in VSCode using (Shortcut Ctrl + ~)
+
+3. Run command
+$ cd chapter01-basic-knowledges/1.1-basic-golang/1.1.03-variable-types
+
+4. Run command
+$ go mod init automationworkshop/main
+go: creating new go.mod: module automationworkshop/main
+
+5. Run command
+$ go run main.go
+string =  This variable type string
+int =  305
+bool =  true
+---
+interface =  This variable type string
+interface =  305
+interface =  true
+---
+map =  map[citizen_id:1234 firstname:Chaiyapong lastname:Lapliengtrakul]
+map JSON =  {"citizen_id":"1234","firstname":"Chaiyapong","lastname":"Lapliengtrakul"}
+---
+slice =  [item 1 item 2 item 3]
+slice JSON =  ["item 1","item 2","item 3"]
+---
+Citizen =  &{Chaiyapong Lapliengtrakul 1234}
+Citizen JSON =  {"firstname":"Chaiyapong","lastname":"Lapliengtrakul","citizen_id":"1234"}
+---
+theMap is nil
+theCitizen is nil
+---string =  This variable type string
+int =  305
+bool =  true
+---
+interface =  This variable type string
+interface =  305
+interface =  true
+---
+map =  map[citizen_id:1234 firstname:Chaiyapong lastname:Lapliengtrakul]
+map JSON =  {"citizen_id":"1234","firstname":"Chaiyapong","lastname":"Lapliengtrakul"}
+---
+slice =  [item 1 item 2 item 3]
+slice JSON =  ["item 1","item 2","item 3"]
+---
+Citizen =  &{Chaiyapong Lapliengtrakul 1234}
+Citizen JSON =  {"firstname":"Chaiyapong","lastname":"Lapliengtrakul","citizen_id":"1234"}
+---
+theMap is nil
+theCitizen is nil
+---
+
+6. Run command
+$ cd ../../../
+
+7. You will be at root of project ready to move to next lesson
