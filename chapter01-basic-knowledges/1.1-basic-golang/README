@@ -1,6 +1,6 @@
-- Install Golang
-- First Program in Golang
-- ตัวแปร, Interface, Struct, Function
-- If และ Loop
-- ตัวแปรชนิด error
-- Go Routine และ Channel
+1.1.01 Install Golang
+1.1.02 First Program in Golang
+1.1.03 Variable, Interface, Struct, Function
+1.1.04 If and Loop
+1.1.05 Go error
+1.1.06 Go Routine and Channel
