@@ -47,6 +47,7 @@ func main() {
 	// 5. Struct type
 	// - It is my practice to always create struct variable as pointer
 	//   to avoid confusion in team member
+	// - JSON marshal will use struct tag
 	theCitizen := &Citizen{
 		Firstname: "Chaiyapong",
 		Lastname:  "Lapliengtrakul",
