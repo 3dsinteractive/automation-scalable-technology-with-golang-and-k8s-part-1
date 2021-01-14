@@ -1,0 +1,4 @@
+4.1 Thai Citizen ID Card Register Application Architecture
+4.2 Thai Citizen ID Card Register API using Async Task Service
+4.3 Validation Process with 3rd party API and send confirmation email after validation using Consumer service   29
+4.4 Daily batch process to create all Citizen ID Card and request 3rd party delivery service using Scheduler Service & Parallel Task & Batch Consumer Service   
