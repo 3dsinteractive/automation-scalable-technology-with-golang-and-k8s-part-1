@@ -1,0 +1,5 @@
+1.2.01 Install Docker
+1.2.02 Run nginx with Docker
+1.2.03 Build docker image
+1.2.04 Push docker image to docker hub
+1.2.05 Run your docker image using docker compose
