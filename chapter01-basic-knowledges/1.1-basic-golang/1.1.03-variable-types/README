@@ -32,25 +32,9 @@ Citizen JSON =  {"firstname":"Chaiyapong","lastname":"Lapliengtrakul","citizen_i
 ---
 theMap is nil
 theCitizen is nil
----string =  This variable type string
-int =  305
-bool =  true
 ---
-interface =  This variable type string
-interface =  305
-interface =  true
----
-map =  map[citizen_id:1234 firstname:Chaiyapong lastname:Lapliengtrakul]
-map JSON =  {"citizen_id":"1234","firstname":"Chaiyapong","lastname":"Lapliengtrakul"}
----
-slice =  [item 1 item 2 item 3]
-slice JSON =  ["item 1","item 2","item 3"]
----
-Citizen =  &{Chaiyapong Lapliengtrakul 1234}
-Citizen JSON =  {"firstname":"Chaiyapong","lastname":"Lapliengtrakul","citizen_id":"1234"}
----
-theMap is nil
-theCitizen is nil
+Gender is Unspecify
+Gender =  UNSPECIFY
 ---
 
 6. Run command

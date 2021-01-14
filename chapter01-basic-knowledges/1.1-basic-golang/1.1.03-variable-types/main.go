@@ -80,6 +80,21 @@ func main() {
 		fmt.Println("theCitizen is nil")
 	}
 	printUnderline()
+
+	// 8. Enum
+	theGender := Male
+	theGender = Female
+	theGender = Unspecify
+	switch theGender {
+	case Male:
+		fmt.Println("Gender is Male")
+	case Female:
+		fmt.Println("Gender is Female")
+	case Unspecify:
+		fmt.Println("Gender is Unspecify")
+	}
+	printGender(theGender)
+	printUnderline()
 }
 
 func printUnderline() {
@@ -134,4 +149,20 @@ func printCitizen(input *Citizen) {
 func printCitizenAsJSON(input *Citizen) {
 	js, _ := json.Marshal(input)
 	fmt.Println("Citizen JSON = ", string(js))
+}
+
+// GenderType is enum for Gender
+type GenderType string
+
+const (
+	// Unspecify is gender type for Unspecify
+	Unspecify GenderType = "UNSPECIFY"
+	// Male is gender type for Male
+	Male GenderType = "MALE"
+	// Female is gender type for Female
+	Female GenderType = "FEMALE"
+)
+
+func printGender(input GenderType) {
+	fmt.Println("Gender = ", input)
 }
