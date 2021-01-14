@@ -31,6 +31,14 @@ func main() {
 	theMap["citizen_id"] = "1234"
 	printMap(theMap)
 	printMapAsJSON(theMap)
+	// - Use 2 variables to get map value
+	gender, ok := theMap["gender"]
+	if ok {
+		fmt.Println("gender is ", gender.(string)) // Casting
+	} else {
+		fmt.Println("No Gender specify")
+	}
+
 	printUnderline()
 
 	// 4. slice type (array)

@@ -23,6 +23,7 @@ interface =  true
 ---
 map =  map[citizen_id:1234 firstname:Chaiyapong lastname:Lapliengtrakul]
 map JSON =  {"citizen_id":"1234","firstname":"Chaiyapong","lastname":"Lapliengtrakul"}
+No Gender specify
 ---
 slice =  [item 1 item 2 item 3]
 slice JSON =  ["item 1","item 2","item 3"]
