@@ -1,4 +1,4 @@
-1.1.02 First Program
+1.1.2 First Program
 
 1. Download and install VSCode https://code.visualstudio.com/download
 
@@ -7,7 +7,7 @@
 3. Open terminal in VSCode using (Ctrl + ~)
 
 4. Run command
-$ cd chapter01-basic-knowledges/1.1-basic-golang/1.1.02-first-program
+$ cd chapter01-basic-knowledges/1.1-basic-golang/02-first-program
 
 5. Run command
 $ go mod init automationworkshop/main
