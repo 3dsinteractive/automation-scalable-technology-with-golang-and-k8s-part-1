@@ -1,13 +1,13 @@
 lesson 1.3.2-run-nginx-with-k8s
 
-0. Run command to enter lesson
-$ cd 1.3-basic-kubernetes/02-run-nginx-with-k8s
+1. Run command to enter lesson
+$ cd chapter01-basic-knowledges/1.3-basic-kubernetes/02-run-nginx-with-k8s
 
-1. Run command to create namespace
+2. Run command to create namespace
 $ kubectl apply -f 00-namespace.yml
 namespace/basic-k8s created
 
-2. Check for namespace (basic-k8s)
+3. Check for namespace (basic-k8s)
 $ kubectl get ns
 NAME              STATUS   AGE
 basic-k8s         Active   19s
@@ -16,34 +16,34 @@ kube-node-lease   Active   6h40m
 kube-public       Active   6h40m
 kube-system       Active   6h40m
 
-3. Create deployment for nginx
+4. Create deployment for nginx
 $ kubectl apply -f 01-deployment.yml
 deployment.apps/nginx created
 
-4. Check for nginx deployment
+5. Check for nginx deployment
 $ kubectl get pod -n basic-k8s
 NAME                     READY   STATUS    RESTARTS   AGE
 nginx-86469cbbfd-89cd6   1/1     Running   0          46s
 
-5. Create service for nginx
+6. Create service for nginx
 $ kubectl apply -f 02-service.yml
 service/nginx created
 
-6. Check for service nginx
+7. Check for service nginx
 $ kubectl get svc -n basic-k8s
 NAME    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
 nginx   ClusterIP   10.98.127.130   <none>        8080/TCP,8443/TCP   8s
 
-7. Create ingress rule to nginx service
+8. Create ingress rule to nginx service
 $ kubectl apply -f 03-ingress.yml
 ingress.extensions/ingress created
 
-8. Check for ingress rule
+9. Check for ingress rule
 $ kubectl get ing -n basic-k8s
 NAME      CLASS    HOSTS                        ADDRESS     PORTS   AGE
 ingress   <none>   kubernetes.docker.internal   localhost   80      36s
 
-9. Test access service via ingress
+10. Test access service via ingress
 $ curl -X GET "http://kubernetes.docker.internal"
 <!DOCTYPE html>
 <html>
@@ -71,8 +71,8 @@ Commercial support is available at
 </body>
 </html>
 
-10. Run command to cleanup
+11. Run command to cleanup
 $ kubectl delete ns basic-k8s
 
-11. Run command to exit directory
+12. Run command to exit directory
 $ cd ../../../

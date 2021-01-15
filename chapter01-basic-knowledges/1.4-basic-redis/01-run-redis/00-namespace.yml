@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: basic-redis
+  labels:
+    name: basic-redis
+    module: Namespace
