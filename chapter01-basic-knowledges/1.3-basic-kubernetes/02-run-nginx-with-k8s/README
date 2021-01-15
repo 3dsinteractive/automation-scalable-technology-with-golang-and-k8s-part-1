@@ -1,3 +1,7 @@
+lesson 1.3.2-run-nginx-with-k8s
+
+0. Run command to enter lesson
+$ cd 1.3-basic-kubernetes/02-run-nginx-with-k8s
 
 1. Run command to create namespace
 $ kubectl apply -f 00-namespace.yml
@@ -69,3 +73,6 @@ Commercial support is available at
 
 10. Run command to cleanup
 $ kubectl delete ns basic-k8s
+
+11. Run command to exit directory
+$ cd ../../../
