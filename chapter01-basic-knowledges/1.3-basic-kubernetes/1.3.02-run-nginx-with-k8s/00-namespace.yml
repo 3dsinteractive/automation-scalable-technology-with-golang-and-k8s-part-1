@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: basic-k8s
+  labels:
+    name: basic-k8s
+    module: Namespace

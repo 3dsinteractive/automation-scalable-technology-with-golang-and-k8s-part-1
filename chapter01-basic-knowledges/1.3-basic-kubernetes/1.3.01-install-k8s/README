@@ -46,3 +46,24 @@ $ kubectl get node
 NAME             STATUS   ROLES    AGE     VERSION
 docker-desktop   Ready    master   3m44s   v1.19.3
 
+7. Install nginx-ingress follow the step from this URL
+https://kubernetes.github.io/ingress-nginx/deploy/#docker-for-mac
+TLDR; Run this command
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.43.0/deploy/static/provider/cloud/deploy.yaml
+
+8. Run command
+$ kubectl get ns
+You must see ingress-nginx in the list of namespace
+
+9. Run command
+$ kubectl get po -n ingress-nginx
+NAME                                        READY   STATUS      RESTARTS   AGE
+ingress-nginx-admission-create-mlwmr        0/1     Completed   0          5m19s
+ingress-nginx-admission-patch-fpk4v         0/1     Completed   0          5m19s
+ingress-nginx-controller-56c75d774d-xwjhq   1/1     Running     0          5m19s
+
+10. Run command
+$ kubectl get svc -n ingress-nginx
+NAME                                 TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+ingress-nginx-controller             LoadBalancer   10.109.191.187   localhost     80:31170/TCP,443:31054/TCP   5m54s
+ingress-nginx-controller-admission   ClusterIP      10.106.142.243   <none>        443/TCP                      5m54s

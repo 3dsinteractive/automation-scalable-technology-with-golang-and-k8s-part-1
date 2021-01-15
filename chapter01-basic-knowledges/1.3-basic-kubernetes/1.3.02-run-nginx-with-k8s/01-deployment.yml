@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: basic-k8s
+  labels:
+    name: nginx
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      name: nginx
+  template:
+    metadata:
+      labels:
+        name: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: 3dsinteractive/nginx:1.12
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: 500Mi
+            cpu: 200m
+          limits:
+            memory: 1Gi
+            cpu: 500m
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+          periodSeconds: 300
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+          periodSeconds: 30
+          failureThreshold: 5
+        ports:
+        - containerPort: 8080
+          name: ngx8080
+        - containerPort: 8443
+          name: ngx8443
