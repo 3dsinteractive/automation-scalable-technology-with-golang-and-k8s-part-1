@@ -3,6 +3,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
@@ -54,8 +55,22 @@ func NewMicroservice() *Microservice {
 
 // startAsyncTaskConsumer read async task message from message queue and execute with handler
 func (ms *Microservice) startAsyncTaskConsumer(path string, cacheServer string, mqServers string, h ServiceHandleFunc) {
-	ms.Consume(mqServers, escapeName(path), "asynctask", -1, func(ctx IContext) error {
-		return h(NewAsyncTaskContext(ms))
+	topic := escapeName(path)
+	mq := NewMQ(mqServers, ms)
+	err := mq.CreateTopicR(topic, 5, 0, time.Hour*24*30) // retain message for 30 days
+	if err != nil {
+		ms.Log("ATASK", err.Error())
+	}
+
+	ms.Consume(mqServers, topic, "atask", -1, func(ctx IContext) error {
+		message := map[string]interface{}{}
+		err := json.Unmarshal([]byte(ctx.ReadInput()), &message)
+		if err != nil {
+			return err
+		}
+		ref, _ := message["ref"].(string)
+		input, _ := message["input"].(string)
+		return h(NewAsyncTaskContext(ms, cacheServer, ref, input))
 	})
 }
 
@@ -66,8 +81,8 @@ func (ms *Microservice) handleAsyncTaskRequest(path string, cacherServer string,
 	// 1. Read Input
 	input := ctx.ReadInput()
 
-	// 2. Generate Token
-	token := fmt.Sprintf("asynctask-%s", randString())
+	// 2. Generate REF
+	ref := fmt.Sprintf("atask-%s", randString())
 
 	// 3. Set Status in Cache
 	cacher := ctx.Cacher(cacherServer)
@@ -75,31 +90,42 @@ func (ms *Microservice) handleAsyncTaskRequest(path string, cacherServer string,
 		"status": "processing",
 	}
 	expire := time.Minute * 30
-	cacher.Set(token, status, expire)
+	cacher.Set(ref, status, expire)
 
 	// 4. Send Message to MQ
 	prod := ctx.Producer(mqServers)
 	message := map[string]interface{}{
-		"token": token,
+		"ref":   ref,
 		"input": input,
 	}
 	prod.SendMessage(topic, "", message)
 
-	// 5. Response Token
+	// 5. Response REF
 	res := map[string]string{
-		"token": token,
+		"ref": ref,
 	}
 	ctx.Response(http.StatusOK, res)
 	return nil
 }
 
 func (ms *Microservice) handleAsyncTaskResponse(path string, cacheServer string, ctx IContext) error {
-	// 1. ReadInput (Token from query string)
+	// 1. ReadInput (REF from query string)
+	ref := ctx.QueryParam("ref")
 
 	// 2. Read Status from Cache
+	cacher := ctx.Cacher(cacheServer)
+	statusJS, err := cacher.Get(ref)
+	if err != nil {
+		return err
+	}
 
 	// 3. Return Status
-
+	status := map[string]interface{}{}
+	err = json.Unmarshal([]byte(statusJS), &status)
+	if err != nil {
+		return err
+	}
+	ctx.Response(http.StatusOK, status)
 	return nil
 }
 

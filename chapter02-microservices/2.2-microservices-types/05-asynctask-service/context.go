@@ -5,6 +5,7 @@ package main
 type IContext interface {
 	Log(message string)
 	Param(name string) string
+	QueryParam(name string) string
 	Response(responseCode int, responseData interface{})
 	ReadInput() string
 	ReadInputs() []string
@@ -12,4 +13,5 @@ type IContext interface {
 	// Dependency
 	Cacher(server string) ICacher
 	Producer(servers string) IProducer
+	MQ(servers string) IMQ
 }

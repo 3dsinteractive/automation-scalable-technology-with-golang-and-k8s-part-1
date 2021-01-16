@@ -27,6 +27,11 @@ func (ctx *ConsumerContext) Param(name string) string {
 	return ""
 }
 
+// QueryParam return empty in consumer
+func (ctx *ConsumerContext) QueryParam(name string) string {
+	return ""
+}
+
 // ReadInput return message
 func (ctx *ConsumerContext) ReadInput() string {
 	return ctx.message
@@ -50,4 +55,9 @@ func (ctx *ConsumerContext) Cacher(server string) ICacher {
 // Producer return producer
 func (ctx *ConsumerContext) Producer(servers string) IProducer {
 	return NewProducer(servers, ctx.ms)
+}
+
+// MQ return MQ
+func (ctx *ConsumerContext) MQ(servers string) IMQ {
+	return NewMQ(servers, ctx.ms)
 }
