@@ -19,9 +19,11 @@ func main() {
 
 	ms.GET("/citizen/:id", func(ctx IContext) error {
 		id := ctx.Param("id")
+		page := ctx.QueryParam("page")
 		ctx.Log("GET: /citizen/" + id)
 		citizen := map[string]interface{}{
-			"id": id,
+			"id":   id,
+			"page": page,
 		}
 		ctx.Response(http.StatusOK, citizen)
 		return nil

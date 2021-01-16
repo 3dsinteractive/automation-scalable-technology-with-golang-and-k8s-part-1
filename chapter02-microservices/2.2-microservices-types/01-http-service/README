@@ -14,8 +14,8 @@ $ curl -X POST "localhost:8080/citizen"
 $ curl -X PUT "localhost:8080/citizen/123"
 {"id":"123"}
 
-$ curl -X GET "localhost:8080/citizen/123"
-{"id":"123"}
+$ curl -X GET "localhost:8080/citizen/123?page=2"
+{"id":"123","page":"2"}
 
 $ curl -X DELETE "localhost:8080/citizen/123"
 {"status":"success"}

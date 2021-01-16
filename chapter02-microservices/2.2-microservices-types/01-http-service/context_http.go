@@ -31,6 +31,11 @@ func (ctx *HTTPContext) Param(name string) string {
 	return ctx.c.Param(name)
 }
 
+// QueryParam return query param
+func (ctx *HTTPContext) QueryParam(name string) string {
+	return ctx.c.QueryParam(name)
+}
+
 // ReadInput read the request body and return it as string
 func (ctx *HTTPContext) ReadInput() string {
 	body, err := ioutil.ReadAll(ctx.c.Request().Body)
