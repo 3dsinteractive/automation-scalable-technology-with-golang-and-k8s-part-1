@@ -9,7 +9,7 @@ func main() {
 	ms := NewMicroservice()
 
 	servers := "localhost:9094"
-	topic := "when-citizen-has-registered-batch"
+	topic := "when-citizen-has-registered-batch-" + randString()
 	groupID := "validation-consumer"
 	timeout := time.Duration(-1)
 	batchSize := 3
@@ -30,10 +30,11 @@ func main() {
 	go func() {
 		for i := 0; i < 10; i++ {
 			prod.SendMessage(topic, "", map[string]interface{}{"message_id": i})
-			time.Sleep(500 * time.Millisecond)
+			time.Sleep(time.Second)
 		}
 
-		// Exit program
+		// Wait for last batch then exit program
+		time.Sleep(5 * time.Second)
 		ms.Stop()
 	}()
 

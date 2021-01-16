@@ -2,7 +2,6 @@
 package main
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -10,7 +9,7 @@ func main() {
 	ms := NewMicroservice()
 
 	servers := "localhost:9094"
-	topic := "when-citizen-has-registered"
+	topic := "when-citizen-has-registered-" + randString()
 	groupID := "validation-consumer"
 	timeout := time.Duration(-1)
 
@@ -23,7 +22,6 @@ func main() {
 	prod := NewProducer(servers, ms)
 	go func() {
 		for i := 0; i < 10; i++ {
-			fmt.Println("message ", i)
 			prod.SendMessage(topic, "", map[string]interface{}{"message_id": i})
 			time.Sleep(time.Second)
 		}
