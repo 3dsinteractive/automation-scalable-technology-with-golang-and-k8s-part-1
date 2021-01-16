@@ -7,3 +7,15 @@ go: creating new go.mod: module automationworkshop/main
 
 $ go build .
 $ ./main
+
+$ curl -X POST "localhost:8080/citizen"
+{"status":"success"}
+
+$ curl -X PUT "localhost:8080/citizen/123"
+{"id":"123"}
+
+$ curl -X GET "localhost:8080/citizen/123"
+{"id":"123"}
+
+$ curl -X DELETE "localhost:8080/citizen/123"
+{"status":"success"}
