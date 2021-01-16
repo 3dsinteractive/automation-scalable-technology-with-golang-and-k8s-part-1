@@ -19,3 +19,5 @@ $ curl -X GET "localhost:8080/citizen/123"
 
 $ curl -X DELETE "localhost:8080/citizen/123"
 {"status":"success"}
+
+$ cd ../../../
