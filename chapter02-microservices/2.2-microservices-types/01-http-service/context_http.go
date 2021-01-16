@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 
 	"github.com/labstack/echo"
 )
@@ -28,6 +29,15 @@ func (ctx *HTTPContext) Log(message string) {
 // Param return parameter by name
 func (ctx *HTTPContext) Param(name string) string {
 	return ctx.c.Param(name)
+}
+
+// ReadInput read the request body and return it as string
+func (ctx *HTTPContext) ReadInput() string {
+	body, err := ioutil.ReadAll(ctx.c.Request().Body)
+	if err != nil {
+		return ""
+	}
+	return string(body)
 }
 
 // Response return response to client
