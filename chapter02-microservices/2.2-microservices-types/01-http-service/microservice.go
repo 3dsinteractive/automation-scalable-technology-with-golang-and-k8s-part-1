@@ -73,7 +73,7 @@ func (ms *Microservice) startHTTP() error {
 
 // Start start all registered services
 func (ms *Microservice) Start() error {
-	// 1. Start HTTP Services
+	// Start HTTP Services
 	err := ms.startHTTP()
 	return err
 }
