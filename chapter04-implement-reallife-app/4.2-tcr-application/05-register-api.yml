@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: register-api
-  namespace: scale-service
+  namespace: tcr-app
   labels:
     name: register-api
 spec:
@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: register-api
-        image: 3dsinteractive/automation-technology:prd-1.0.20210117202336
+        image: 3dsinteractive/automation-technology:prd-1.0.20210118001006
         imagePullPolicy: Always
         readinessProbe:
           httpGet:
@@ -62,7 +62,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: register-api
-  namespace: scale-service
+  namespace: tcr-app
   labels:
     name: register-api
 spec:

@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: zk1
-  namespace: scale-service
+  namespace: tcr-app
   labels:
     name: zk1
 spec:
@@ -62,7 +62,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: zk2
-  namespace: scale-service
+  namespace: tcr-app
   labels:
     name: zk2
 spec:
@@ -122,7 +122,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: zk3
-  namespace: scale-service
+  namespace: tcr-app
   labels:
     name: zk3
 spec:
@@ -182,7 +182,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: zk1
-  namespace: scale-service
+  namespace: tcr-app
   labels:
     name: zk1
 spec:
@@ -204,7 +204,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: zk2
-  namespace: scale-service
+  namespace: tcr-app
   labels:
     name: zk2
 spec:
@@ -226,7 +226,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: zk3
-  namespace: scale-service
+  namespace: tcr-app
   labels:
     name: zk3
 spec:

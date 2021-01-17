@@ -16,19 +16,21 @@ func main() {
 
 	switch serviceID {
 	case "register-api":
-		startHTTP(ms, cfg)
+		startRegisterAPI(ms, cfg)
 	case "mail-consumer":
-		startConsumer(ms, cfg)
+		startMailConsumer(ms, cfg)
 	case "batch-scheduler":
 		startBatchScheduler(ms, cfg)
-	case "batch-worker":
-		startBatchWorker(ms, cfg)
+	case "batch-ptask-api":
+		startBatchPTaskAPI(ms, cfg)
+	case "batch-ptask-worker":
+		startBatchPTaskWorker(ms, cfg)
 	}
 
 	ms.Start()
 }
 
-func startHTTP(ms *Microservice, cfg IConfig) {
+func startRegisterAPI(ms *Microservice, cfg IConfig) {
 	ms.POST("/citizen", func(ctx IContext) error {
 
 		// 1. Read Input (Not using it right now, just for example)
@@ -57,7 +59,7 @@ func startHTTP(ms *Microservice, cfg IConfig) {
 	})
 }
 
-func startConsumer(ms *Microservice, cfg IConfig) {
+func startMailConsumer(ms *Microservice, cfg IConfig) {
 	topic := "when-citizen-has-registered"
 	groupID := "mail-consumer"
 	timeout := time.Duration(-1)
@@ -75,6 +77,10 @@ func startBatchScheduler(ms *Microservice, cfg IConfig) {
 
 }
 
-func startBatchWorker(ms *Microservice, cfg IConfig) {
+func startBatchPTaskAPI(ms *Microservice, cfg IConfig) {
+
+}
+
+func startBatchPTaskWorker(ms *Microservice, cfg IConfig) {
 
 }

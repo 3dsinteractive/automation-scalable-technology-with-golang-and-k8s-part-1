@@ -2,7 +2,7 @@
 
 CMD=build_api
 APP_VERSION=1.0
-TIMESTAMP=$(date +"%Y%m%d%H%M%S")
+TIMESTAMP=20210117185518
 NAMESPACE=prd
 COMPANY=3dsinteractive
 

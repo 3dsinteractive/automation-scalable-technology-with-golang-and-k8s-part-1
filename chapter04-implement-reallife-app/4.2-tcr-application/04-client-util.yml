@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: client-util
-  namespace: scale-service
+  namespace: tcr-app
   labels:
     name: client-util
 spec:

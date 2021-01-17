@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: ingress
-  namespace: scale-service
+  namespace: tcr-app
   labels:
     name: ingress
 spec:
@@ -13,4 +13,11 @@ spec:
       - path: /
         backend:
           serviceName: register-api
+          servicePort: 8080
+  - host: kubernetes.docker.internal
+    http:
+      paths:
+      - path: /ptask
+        backend:
+          serviceName: batch-ptask-api
           servicePort: 8080
