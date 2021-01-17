@@ -11,6 +11,8 @@ import (
 type IProducer interface {
 	// SendMessage will send message to the partition
 	SendMessage(topic string, key string, message interface{}) error
+	// Close the producer
+	Close() error
 }
 
 // Producer implement IProducer, is the service to send message to Kafka
@@ -64,6 +66,21 @@ func (p *Producer) SendMessage(topic string, key string, message interface{}) er
 
 	<-deliveryChan
 	close(deliveryChan)
+
+	return nil
+}
+
+// Close the producer
+func (p *Producer) Close() error {
+	if p.prod == nil {
+		return nil
+	}
+
+	prod := p.prod
+	prod.Flush(5000) // 5s for flush message in queue
+	prod.Close()
+
+	p.ms.Log("PROD", "Close successfully")
 
 	return nil
 }

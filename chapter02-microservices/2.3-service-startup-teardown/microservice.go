@@ -11,6 +11,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"sync"
 	"syscall"
 	"time"
 
@@ -38,6 +39,9 @@ type IMicroservice interface {
 	// Batch Consumer Services
 	ConsumeBatch(servers string, topic string, groupID string, readTimeout time.Duration, batchSize int, batchTimeout time.Duration, h ServiceHandleFunc) error
 
+	// Scheduler Services
+	Schedule(timer time.Duration, h ServiceHandleFunc) chan bool /*exit channel*/
+
 	// AsyncTask Services
 	AsyncPOST(path string, cacheServer string, mqServers string, h ServiceHandleFunc)
 	AsyncPUT(path string, cacheServer string, mqServers string, h ServiceHandleFunc)
@@ -51,6 +55,8 @@ type IMicroservice interface {
 type Microservice struct {
 	echo        *echo.Echo
 	exitChannel chan bool
+	prod        IProducer
+	cacher      ICacher
 }
 
 // ServiceHandleFunc is the handler for each Microservice
@@ -61,6 +67,20 @@ func NewMicroservice() *Microservice {
 	return &Microservice{
 		echo: echo.New(),
 	}
+}
+
+func (ms *Microservice) getProducer(mqServers string) IProducer {
+	if ms.prod == nil {
+		ms.prod = NewProducer(mqServers, ms)
+	}
+	return ms.prod
+}
+
+func (ms *Microservice) getCacher(cacheServer string) ICacher {
+	if ms.cacher == nil {
+		ms.cacher = NewCacher(cacheServer, ms)
+	}
+	return ms.cacher
 }
 
 // ptaskWorker register worker for ParallelTask
@@ -533,6 +553,57 @@ func (ms *Microservice) ConsumeBatch(
 	return nil
 }
 
+// Schedule will run handler at timer period
+func (ms *Microservice) Schedule(timer time.Duration, h ServiceHandleFunc) chan bool /*exit channel*/ {
+
+	// exitChan must be call exitChan <- true from caller to exit scheduler
+	exitChan := make(chan bool, 1)
+	go func() {
+		t := time.NewTicker(timer)
+		done := make(chan bool, 1)
+		isExit := false
+		isExitMutex := sync.Mutex{}
+
+		go func() {
+			<-exitChan
+			isExitMutex.Lock()
+			isExit = true
+			isExitMutex.Unlock()
+			// Stop Tick() and send done message to exit for loop below
+			// Ref: From the documentation http://golang.org/pkg/time/#Ticker.Stop
+			// Stop turns off a ticker. After Stop, no more ticks will be sent.
+			// Stop does not close the channel, to prevent a read from the channel succeeding incorrectly.
+			t.Stop()
+			done <- true
+		}()
+
+		for {
+			select {
+			case execTime := <-t.C:
+				isExitMutex.Lock()
+				if isExit {
+					isExitMutex.Unlock()
+					// Done in the next round
+					continue
+				}
+				isExitMutex.Unlock()
+
+				now := time.Now()
+				// The schedule that older than 10s, will be skip, because t.C is buffer at size 1
+				diff := now.Sub(execTime).Seconds()
+				if diff > 10 {
+					continue
+				}
+				h(NewSchedulerContext(ms))
+			case <-done:
+				return
+			}
+		}
+	}()
+
+	return exitChan
+}
+
 // Start start all registered services
 func (ms *Microservice) Start() error {
 
@@ -562,22 +633,17 @@ func (ms *Microservice) Start() error {
 			if exitHTTP != nil {
 				exitHTTP <- true
 			}
-			// for i := 0; i < scN; i++ {
-			// 	exitSC <- true
-			// }
 			exit = true
 		case <-ms.exitChannel:
 			// Exit from HTTP as well
 			if exitHTTP != nil {
 				exitHTTP <- true
 			}
-			// for i := 0; i < scN; i++ {
-			// 	exitSC <- true
-			// }
 			exit = true
 		}
 	}
 
+	ms.Cleanup()
 	return nil
 }
 
@@ -591,6 +657,13 @@ func (ms *Microservice) Stop() {
 
 // Cleanup clean resources up from every registered services before exit
 func (ms *Microservice) Cleanup() error {
+	ms.Log("MS", "Start cleanup")
+	if ms.cacher != nil {
+		ms.cacher.Close()
+	}
+	if ms.prod != nil {
+		ms.prod.Close()
+	}
 	return nil
 }
 

@@ -61,12 +61,12 @@ func (ctx *HTTPContext) Response(responseCode int, responseData interface{}) {
 
 // Cacher return cacher
 func (ctx *HTTPContext) Cacher(server string) ICacher {
-	return NewCacher(server)
+	return ctx.ms.getCacher(server)
 }
 
 // Producer return producer
 func (ctx *HTTPContext) Producer(servers string) IProducer {
-	return NewProducer(servers, ctx.ms)
+	return ctx.ms.getProducer(servers)
 }
 
 // MQ return MQ

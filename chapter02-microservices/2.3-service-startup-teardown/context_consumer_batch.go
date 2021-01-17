@@ -55,12 +55,12 @@ func (ctx *BatchConsumerContext) Response(responseCode int, responseData interfa
 
 // Cacher return cacher
 func (ctx *BatchConsumerContext) Cacher(server string) ICacher {
-	return NewCacher(server)
+	return ctx.ms.getCacher(server)
 }
 
 // Producer return producer
 func (ctx *BatchConsumerContext) Producer(servers string) IProducer {
-	return NewProducer(servers, ctx.ms)
+	return ctx.ms.getProducer(servers)
 }
 
 // MQ return MQ

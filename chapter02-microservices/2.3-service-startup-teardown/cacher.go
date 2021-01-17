@@ -14,17 +14,20 @@ type ICacher interface {
 	SetS(key string, value string, expire time.Duration) error
 	Get(key string) (string, error)
 	HasChanged(key string, value string) (bool, error)
+	Close() error
 }
 
 // Cacher implement ICacher to connect with Redis
 type Cacher struct {
+	ms     *Microservice
 	server string
 	client *redis.Client
 }
 
 // NewCacher return new instance of Cacher
-func NewCacher(server string) *Cacher {
+func NewCacher(server string, ms *Microservice) *Cacher {
 	return &Cacher{
+		ms:     ms,
 		server: server,
 	}
 }
@@ -94,6 +97,23 @@ func (cache *Cacher) HasChanged(key string, value string) (bool, error) {
 		return true, nil
 	}
 	return false, nil
+}
+
+// Close close the redis client
+func (cache *Cacher) Close() error {
+	// Close current client
+	client := cache.client
+	if client != nil {
+		cache.client = nil
+
+		err := client.Close()
+		if err != nil {
+			return err
+		}
+	}
+
+	cache.ms.Log("CACHER", "Close successfully")
+	return nil
 }
 
 func (cache *Cacher) getClient() (*redis.Client, error) {

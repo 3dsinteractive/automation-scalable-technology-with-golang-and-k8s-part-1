@@ -31,6 +31,11 @@ func (ctx *SchedulerContext) Param(name string) string {
 	return ""
 }
 
+// QueryParam return empty in scheduler
+func (ctx *SchedulerContext) QueryParam(name string) string {
+	return ""
+}
+
 // ReadInput return message (return empty in scheduler)
 func (ctx *SchedulerContext) ReadInput() string {
 	return ""
@@ -48,12 +53,12 @@ func (ctx *SchedulerContext) Response(responseCode int, responseData interface{}
 
 // Cacher return cacher
 func (ctx *SchedulerContext) Cacher(server string) ICacher {
-	return NewCacher(server)
+	return ctx.ms.getCacher(server)
 }
 
 // Producer return producer
 func (ctx *SchedulerContext) Producer(servers string) IProducer {
-	return NewProducer(servers, ctx.ms)
+	return ctx.ms.getProducer(servers)
 }
 
 // MQ return MQ
