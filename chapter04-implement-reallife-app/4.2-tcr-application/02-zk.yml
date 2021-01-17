@@ -1,0 +1,245 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zk1
+  namespace: scale-service
+  labels:
+    name: zk1
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      name: zk1
+  template:
+    metadata:
+      labels:
+        name: zk1
+    spec:
+      containers:
+      - name: zk1
+        image: 3dsinteractive/zookeeper:3.0
+        imagePullPolicy: Always
+        env:
+        - name: ZOO_SERVER_ID
+          value: "1"
+        - name: ALLOW_ANONYMOUS_LOGIN
+          value: "yes"
+        - name: ZOO_SERVERS
+          value: "0.0.0.0:2888:3888,zk2:2888:3888,zk3:2888:3888"
+        - name: ZOO_HEAP_SIZE
+          value: "512"
+        resources:
+          requests:
+            memory: 500Mi
+            cpu: 200m
+          limits:
+            memory: 1Gi
+            cpu: 500m
+        livenessProbe:
+          tcpSocket:
+            port: 2181
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+          periodSeconds: 300
+        readinessProbe:
+          tcpSocket:
+            port: 2181
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+          periodSeconds: 30
+          failureThreshold: 5
+        ports:
+        - containerPort: 2181
+          name: zk2181
+        - containerPort: 2888
+          name: zk2888
+        - containerPort: 3888
+          name: zk3888
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zk2
+  namespace: scale-service
+  labels:
+    name: zk2
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      name: zk2
+  template:
+    metadata:
+      labels:
+        name: zk2
+    spec:
+      containers:
+      - name: zk2
+        image: 3dsinteractive/zookeeper:3.0
+        imagePullPolicy: Always
+        env:
+        - name: ZOO_SERVER_ID
+          value: "2"
+        - name: ALLOW_ANONYMOUS_LOGIN
+          value: "yes"
+        - name: ZOO_SERVERS
+          value: "zk1:2888:3888,0.0.0.0:2888:3888,zk3:2888:3888"
+        - name: ZOO_HEAP_SIZE
+          value: "512"
+        resources:
+          requests:
+            memory: 500Mi
+            cpu: 200m
+          limits:
+            memory: 1Gi
+            cpu: 500m
+        livenessProbe:
+          tcpSocket:
+            port: 2181
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+          periodSeconds: 300
+        readinessProbe:
+          tcpSocket:
+            port: 2181
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+          periodSeconds: 30
+          failureThreshold: 5
+        ports:
+        - containerPort: 2181
+          name: zk2181
+        - containerPort: 2888
+          name: zk2888
+        - containerPort: 3888
+          name: zk3888
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zk3
+  namespace: scale-service
+  labels:
+    name: zk3
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      name: zk3
+  template:
+    metadata:
+      labels:
+        name: zk3
+    spec:
+      containers:
+      - name: zk3
+        image: 3dsinteractive/zookeeper:3.0
+        imagePullPolicy: Always
+        env:
+        - name: ZOO_SERVER_ID
+          value: "3"
+        - name: ALLOW_ANONYMOUS_LOGIN
+          value: "yes"
+        - name: ZOO_SERVERS
+          value: "zk1:2888:3888,zk2:2888:3888,0.0.0.0:2888:3888"
+        - name: ZOO_HEAP_SIZE
+          value: "512"
+        resources:
+          requests:
+            memory: 500Mi
+            cpu: 200m
+          limits:
+            memory: 1Gi
+            cpu: 500m
+        livenessProbe:
+          tcpSocket:
+            port: 2181
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+          periodSeconds: 300
+        readinessProbe:
+          tcpSocket:
+            port: 2181
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+          periodSeconds: 30
+          failureThreshold: 5
+        ports:
+        - containerPort: 2181
+          name: zk2181
+        - containerPort: 2888
+          name: zk2888
+        - containerPort: 3888
+          name: zk3888
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zk1
+  namespace: scale-service
+  labels:
+    name: zk1
+spec:
+  selector:
+    name: zk1
+  ports:
+  - name: zk2181
+    port: 2181
+    protocol: TCP
+  - name: zk2888
+    port: 2888
+    protocol: TCP
+  - name: zk3888
+    port: 3888
+    protocol: TCP
+  clusterIP: None
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zk2
+  namespace: scale-service
+  labels:
+    name: zk2
+spec:
+  selector:
+    name: zk2
+  ports:
+  - name: zk2181
+    port: 2181
+    protocol: TCP
+  - name: zk2888
+    port: 2888
+    protocol: TCP
+  - name: zk3888
+    port: 3888
+    protocol: TCP
+  clusterIP: None
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zk3
+  namespace: scale-service
+  labels:
+    name: zk3
+spec:
+  selector:
+    name: zk3
+  ports:
+  - name: zk2181
+    port: 2181
+    protocol: TCP
+  - name: zk2888
+    port: 2888
+    protocol: TCP
+  - name: zk3888
+    port: 3888
+    protocol: TCP
+  clusterIP: None

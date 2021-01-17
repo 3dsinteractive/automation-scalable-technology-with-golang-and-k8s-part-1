@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+  namespace: scale-service
+  labels:
+    name: ingress
+spec:
+  rules:
+  - host: kubernetes.docker.internal
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: register-api
+          servicePort: 8080

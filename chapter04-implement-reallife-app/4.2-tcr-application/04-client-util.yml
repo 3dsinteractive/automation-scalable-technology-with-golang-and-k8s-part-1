@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: client-util
+  namespace: scale-service
+  labels:
+    name: client-util
+spec:
+  containers:
+    - name: client-util
+      image: 3dsinteractive/util:1.0
+      stdin: true
+      tty: true
+      imagePullPolicy: Always
+      resources:
+        requests:
+          memory: 500Mi
+          cpu: 200m
+        limits:
+          memory: 1Gi
+          cpu: 500m

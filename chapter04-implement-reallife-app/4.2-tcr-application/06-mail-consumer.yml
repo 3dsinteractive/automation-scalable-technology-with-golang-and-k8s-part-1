@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mail-consumer
+  namespace: scale-service
+  labels:
+    name: mail-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: mail-consumer
+  template:
+    metadata:
+      labels:
+        name: mail-consumer
+    spec:
+      containers:
+      - name: mail-consumer
+        image: 3dsinteractive/automation-technology:prd-1.0.20210117202336
+        imagePullPolicy: Always
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 30
+          failureThreshold: 2
+        env:
+        - name: SERVICE_ID
+          value: mail-consumer
+        - name: CACHE_SERVER
+          value: redis:6379
+        - name: MQ_SERVERS
+          value: kfk1:9092,kfk2:9092,kfk3:9092
+        ports:
+        - name: api8080
+          containerPort: 8080
+        resources:
+          requests:
+            memory: 500Mi
+            cpu: 200m
+          limits:
+            memory: 1Gi
+            cpu: 500m

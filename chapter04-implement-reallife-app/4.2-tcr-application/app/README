@@ -1,0 +1,4 @@
+$ go mod init automationworkshop/main
+go: creating new go.mod: module automationworkshop/main
+
+$ kubectl scale -f 06-mail-consumer.yml --replicas=5
