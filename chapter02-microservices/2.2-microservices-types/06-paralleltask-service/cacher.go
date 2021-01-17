@@ -13,6 +13,7 @@ type ICacher interface {
 	Set(key string, value interface{}, expire time.Duration) error
 	SetS(key string, value string, expire time.Duration) error
 	Get(key string) (string, error)
+	HasChanged(key string, value string) (bool, error)
 }
 
 // Cacher implement ICacher to connect with Redis
@@ -79,6 +80,20 @@ func (cache *Cacher) Get(key string) (string, error) {
 	}
 
 	return val, nil
+}
+
+// HasChanged detect if value of key has changed it will return true
+// If get and error it will return true with error
+// If get the same value it will return false
+func (cache *Cacher) HasChanged(key string, value string) (bool, error) {
+	current, err := cache.Get(key)
+	if err != nil {
+		return true, err
+	}
+	if current != value {
+		return true, nil
+	}
+	return false, nil
 }
 
 func (cache *Cacher) getClient() (*redis.Client, error) {

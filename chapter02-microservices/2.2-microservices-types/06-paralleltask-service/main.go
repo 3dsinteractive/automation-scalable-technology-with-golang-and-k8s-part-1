@@ -1,7 +1,11 @@
 // Create and maintain by Chaiyapong Lapliengtrakul (chaiyapong@3dsinteractive.com), All right reserved (2021 - Present)
 package main
 
-import "net/http"
+import (
+	"math/rand"
+	"net/http"
+	"time"
+)
 
 func main() {
 	ms := NewMicroservice()
@@ -17,6 +21,8 @@ func main() {
 			res := map[string]interface{}{
 				"id": "123",
 			}
+			n := rand.Intn(5)
+			time.Sleep(time.Duration(n) * time.Second)
 			ctx.Response(http.StatusOK, res)
 			return nil
 		})

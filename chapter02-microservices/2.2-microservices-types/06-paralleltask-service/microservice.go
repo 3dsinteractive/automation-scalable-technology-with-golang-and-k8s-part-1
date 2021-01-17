@@ -89,83 +89,129 @@ func (ms *Microservice) PTaskWorker(path string, cacheServer string, mqServers s
 	go ms.ptaskWorker(path, cacheServer, mqServers, h)
 }
 
-// PTask register handler to start/stop/status ParallelTask
-func (ms *Microservice) PTask(path string, cacheServer string, mqServers string) {
-	ms.POST(path, func(ctx IContext) error {
-		topic := escapeName(path)
+func (ms *Microservice) handlePTaskPOST(path string, cacheServer string, mqServers string, ctx IContext) error {
+	topic := escapeName("ptask", path)
 
-		// 1. Read Input
-		input := ctx.ReadInput()
-		taskIDParam := ctx.QueryParam("task_id")
-		workerCountStr := ctx.QueryParam("worker_count")
+	// 1. Read Input
+	input := ctx.ReadInput()
+	taskIDParam := ctx.QueryParam("task_id")
+	workerCountStr := ctx.QueryParam("worker_count")
 
-		if len(taskIDParam) == 0 {
-			return fmt.Errorf("task_id in query param is required")
-		}
+	if len(taskIDParam) == 0 {
+		return fmt.Errorf("task_id in query param is required")
+	}
 
-		// 2. Get status of current task
-		// - If it is running, then return
-		// - If it is not running, then start task
-		taskID := "ptask-" + taskIDParam
-		cacher := ctx.Cacher(cacheServer)
-		statusStr, err := cacher.Get(taskID)
+	// 2. Get status of current task
+	// - If it is running, then return
+	// - If it is not running, then start task
+	taskID := "ptask-" + taskIDParam
+	cacher := ctx.Cacher(cacheServer)
+	statusStr, err := cacher.Get(taskID)
+	if err != nil {
+		ms.Log("PTASK", err.Error())
+		return err
+	}
+	status := map[string]interface{}{}
+	if len(statusStr) != 0 {
+		err = json.Unmarshal([]byte(statusStr), &status)
 		if err != nil {
 			ms.Log("PTASK", err.Error())
 			return err
 		}
-		status := map[string]interface{}{}
-		if len(statusStr) != 0 {
-			err = json.Unmarshal([]byte(statusStr), &status)
-			if err != nil {
-				ms.Log("PTASK", err.Error())
-				return err
-			}
-			taskStatus, _ := status["status"].(string)
-			if taskStatus == "running" {
-				return nil
-			}
+		taskStatus, _ := status["status"].(string)
+		if taskStatus == "running" {
+			return nil
 		}
+	}
 
-		// 3. Create new task status and save in cache
-		workerCount, err := strconv.Atoi(workerCountStr)
+	// 3. Create new task status and save in cache
+	workerCount, err := strconv.Atoi(workerCountStr)
+	if err != nil {
+		workerCount = 3 // default workers size
+	}
+	workers := []map[string]interface{}{}
+	messages := []map[string]interface{}{}
+	for i := 0; i < workerCount; i++ {
+		workerID := taskID + "-" + randString()
+		message := map[string]interface{}{
+			"task_id":   taskID,
+			"worker_id": workerID,
+			"input":     input,
+		}
+		messages = append(messages, message)
+
+		workers = append(workers, map[string]interface{}{
+			"status":    "running",
+			"worker_id": workerID,
+			"code":      "",
+			"response":  "",
+			"error":     "",
+		})
+	}
+	status = map[string]interface{}{
+		"status":  "running",
+		"workers": workers,
+	}
+
+	// 4. Set Status in Cache
+	expire := time.Minute * 30
+	cacher.Set(taskID, status, expire)
+
+	// 5. Send message to start ptask
+	prod := ctx.Producer(mqServers)
+	for _, message := range messages {
+		prod.SendMessage(topic, "", message)
+	}
+
+	// 6. Response task_id
+	res := map[string]string{
+		"task_id": taskID,
+	}
+	ctx.Response(http.StatusOK, res)
+	return nil
+}
+
+func (ms *Microservice) handlePTaskGET(path string, cacheServer string, mqServers string, ctx IContext) error {
+
+	// 1. Read Input
+	taskIDParam := ctx.QueryParam("task_id")
+
+	if len(taskIDParam) == 0 {
+		return fmt.Errorf("task_id in query param is required")
+	}
+
+	// 2. Get status of current task
+	// - If it is running, then return
+	// - If it is not running, then start task
+	taskID := "ptask-" + taskIDParam
+	cacher := ctx.Cacher(cacheServer)
+	statusStr, err := cacher.Get(taskID)
+	if err != nil {
+		ms.Log("PTASK", err.Error())
+		return err
+	}
+	status := map[string]interface{}{}
+	if len(statusStr) > 0 {
+		err = json.Unmarshal([]byte(statusStr), &status)
 		if err != nil {
-			workerCount = 3 // default workers size
+			ms.Log("PTASK", err.Error())
+			return err
 		}
-		workers := []map[string]interface{}{}
-		for i := 0; i < workerCount; i++ {
-			// 4. Send Message to MQ
-			workerID := taskID + "-" + randString()
-			prod := ctx.Producer(mqServers)
-			message := map[string]interface{}{
-				"task_id":   taskID,
-				"worker_id": workerID,
-				"input":     input,
-			}
-			prod.SendMessage(topic, "", message)
+	}
 
-			workers = append(workers, map[string]interface{}{
-				"status":    "running",
-				"worker_id": workerID,
-				"code":      "",
-				"response":  "",
-				"error":     "",
-			})
-		}
-		status = map[string]interface{}{
-			"status":  "running",
-			"workers": workers,
-		}
+	ctx.Response(http.StatusOK, status)
+	return nil
+}
 
-		// 5. Set Status in Cache
-		expire := time.Minute * 30
-		cacher.Set(taskID, status, expire)
-
-		// 6. Response task_id
-		res := map[string]string{
-			"task_id": taskID,
-		}
-		ctx.Response(http.StatusOK, res)
-		return nil
+// PTask register handler to start/stop/status ParallelTask
+func (ms *Microservice) PTask(path string, cacheServer string, mqServers string) {
+	// Start PTask
+	ms.POST(path, func(ctx IContext) error {
+		return ms.handlePTaskPOST(path, cacheServer, mqServers, ctx)
+	})
+	// Get PTask Status
+	ms.GET(path, func(ctx IContext) error {
+		return ms.handlePTaskGET(path, cacheServer, mqServers, ctx)
 	})
 }
 

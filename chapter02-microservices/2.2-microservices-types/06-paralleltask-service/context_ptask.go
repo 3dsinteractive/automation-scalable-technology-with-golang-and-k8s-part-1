@@ -58,60 +58,85 @@ func (ctx *PTaskContext) ReadInputs() []string {
 
 // Response return response to client
 func (ctx *PTaskContext) Response(responseCode int, responseData interface{}) {
-	// 1. Get the current task status
-	cacher := ctx.Cacher(ctx.cacheServer)
-	currentStatusStr, err := cacher.Get(ctx.taskID)
-	if err != nil {
-		ctx.Log(err.Error())
-		return
-	}
-	currentStatus := map[string]interface{}{}
-	err = json.Unmarshal([]byte(currentStatusStr), &currentStatus)
-	if err != nil {
-		ctx.Log(err.Error())
-		return
-	}
-
-	// 2. If task is complete, return
-	taskStatus, _ := currentStatus["status"].(string)
-	if taskStatus == "complete" {
-		return
-	}
-	workers, _ := currentStatus["workers"].([]interface{})
-	if len(workers) == 0 {
-		ctx.Log("No Workers")
-		return
-	}
-
-	// 3. Find worker that match ctx, and set the status to complete
-	for _, w := range workers {
-		worker := w.(map[string]interface{})
-		workerID, _ := worker["worker_id"]
-		if workerID != ctx.workerID {
-			continue
+	maxLimit := 100
+	for true {
+		// Just check the limit to prevent infinite loop
+		maxLimit--
+		if maxLimit < 0 {
+			return
 		}
 
-		worker["status"] = "complete"
-		worker["response"] = responseData
-		worker["code"] = responseCode
-		break
-	}
+		// 1. Get the current task status
+		cacher := ctx.Cacher(ctx.cacheServer)
+		currentStatusStr, err := cacher.Get(ctx.taskID)
+		if err != nil {
+			ctx.Log(err.Error())
+			return
+		}
+		currentStatus := map[string]interface{}{}
+		if len(currentStatusStr) > 0 {
+			err = json.Unmarshal([]byte(currentStatusStr), &currentStatus)
+			if err != nil {
+				ctx.Log(err.Error())
+				return
+			}
+		}
 
-	// 4. If all workers has completed, set the task status to complete
-	allWorkerComplete := true
-	for _, w := range workers {
-		worker := w.(map[string]interface{})
-		if worker["status"] == "running" {
-			allWorkerComplete = false
+		// 2. If task is complete, return
+		taskStatus, _ := currentStatus["status"].(string)
+		if taskStatus == "complete" {
+			return
+		}
+		workers, _ := currentStatus["workers"].([]interface{})
+		if len(workers) == 0 {
+			ctx.Log("No Workers")
+			return
+		}
+
+		// 3. Find worker that match ctx, and set the status to complete
+		for _, w := range workers {
+			worker := w.(map[string]interface{})
+			workerID, _ := worker["worker_id"]
+			if workerID != ctx.workerID {
+				continue
+			}
+
+			worker["status"] = "complete"
+			worker["response"] = responseData
+			worker["code"] = responseCode
 			break
 		}
-	}
-	if allWorkerComplete {
-		currentStatus["status"] = "complete"
-	}
 
-	// 5. Save status in cache
-	cacher.Set(ctx.taskID, currentStatus, 30*time.Minute)
+		// 4. If all workers has completed, set the task status to complete
+		allWorkerComplete := true
+		for _, w := range workers {
+			worker := w.(map[string]interface{})
+			if worker["status"] == "running" {
+				allWorkerComplete = false
+				break
+			}
+		}
+		if allWorkerComplete {
+			currentStatus["status"] = "complete"
+		}
+
+		// 5. Before send status update, just check race condition
+		if len(currentStatusStr) > 0 {
+			hasChanged, err := cacher.HasChanged(ctx.taskID, currentStatusStr)
+			if err != nil {
+				ctx.Log(err.Error())
+				return
+			}
+			// If race condition happen, just refresh status and try to update again
+			if hasChanged {
+				continue
+			}
+		}
+
+		// 6. Save status in cache
+		cacher.Set(ctx.taskID, currentStatus, 30*time.Minute)
+		break
+	}
 }
 
 // Cacher return cacher
