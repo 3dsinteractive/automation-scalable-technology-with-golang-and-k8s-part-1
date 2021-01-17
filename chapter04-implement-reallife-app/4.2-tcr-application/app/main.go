@@ -19,6 +19,10 @@ func main() {
 		startHTTP(ms, cfg)
 	case "mail-consumer":
 		startConsumer(ms, cfg)
+	case "batch-scheduler":
+		startBatchScheduler(ms, cfg)
+	case "batch-worker":
+		startBatchWorker(ms, cfg)
 	}
 
 	ms.Start()
@@ -65,4 +69,12 @@ func startConsumer(ms *Microservice, cfg IConfig) {
 		ctx.Log("Mail has sent to " + msg)
 		return nil
 	})
+}
+
+func startBatchScheduler(ms *Microservice, cfg IConfig) {
+
+}
+
+func startBatchWorker(ms *Microservice, cfg IConfig) {
+
 }
