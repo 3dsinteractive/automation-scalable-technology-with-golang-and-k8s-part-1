@@ -11,16 +11,18 @@ import (
 func main() {
 	ms := NewMicroservice()
 
-	startHTTP(ms)
-	startConsumer(ms)
-	startBatchConsumer(ms)
-	exitSC := startScheduler(ms)
-	startAsyncTask(ms)
-	startParallelTask(ms)
+	ms.RegisterLivenessProbeEndpoint("/healthz")
 
-	defer func() {
-		exitSC <- true
-	}()
+	startHTTP(ms)
+	// startConsumer(ms)
+	// startBatchConsumer(ms)
+	// exitSC := startScheduler(ms)
+	// startAsyncTask(ms)
+	// startParallelTask(ms)
+
+	// defer func() {
+	// 	exitSC <- true
+	// }()
 
 	ms.Start()
 }
