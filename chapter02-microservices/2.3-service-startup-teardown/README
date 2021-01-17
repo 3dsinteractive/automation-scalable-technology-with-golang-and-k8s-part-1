@@ -2,3 +2,5 @@
 
 $ go mod init automationworkshop/main
 go: creating new go.mod: module automationworkshop/main
+
+kill -15 
