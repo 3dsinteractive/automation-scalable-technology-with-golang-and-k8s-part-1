@@ -58,6 +58,8 @@ func startConsumer(ms *Microservice, cfg IConfig) {
 	groupID := "mail-consumer"
 	timeout := time.Duration(-1)
 
+	mq := NewMQ(cfg.MQServers(), ms)
+	mq.CreateTopicR(topic, 5, 1, time.Hour*24*30)
 	ms.Consume(cfg.MQServers(), topic, groupID, timeout, func(ctx IContext) error {
 		msg := ctx.ReadInput()
 		ctx.Log("Mail has sent to " + msg)

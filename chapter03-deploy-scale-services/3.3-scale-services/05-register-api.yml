@@ -57,3 +57,19 @@ spec:
           limits:
             memory: 1Gi
             cpu: 500m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: register-api
+  namespace: scale-service
+  labels:
+    name: register-api
+spec:
+  selector:
+    name: register-api
+  ports:
+  - name: "api8080"
+    port: 8080
+    targetPort: 8080
+    protocol: TCP

@@ -6,7 +6,7 @@ metadata:
   labels:
     name: mail-consumer
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       name: mail-consumer
