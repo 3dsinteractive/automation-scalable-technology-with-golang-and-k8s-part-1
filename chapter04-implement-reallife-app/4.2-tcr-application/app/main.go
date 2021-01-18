@@ -34,10 +34,10 @@ func main() {
 }
 
 func startRegisterAPI(ms *Microservice, cfg IConfig) {
-	ms.AsyncPOST("/citizen", cfg.CacheServer(), cfg.MQServers(), func(ctx IContext) error {
+	ms.AsyncPOST("/api/citizen", cfg.CacheServer(), cfg.MQServers(), func(ctx IContext) error {
 		// 1. Read Input (Not using it right now, just for example)
 		input := ctx.ReadInput()
-		ctx.Log("POST: /citizen " + input)
+		ctx.Log("POST: /api/citizen " + input)
 
 		// 2. Generate citizenID and send it to MQ
 		//    The citizen id should be received from client, but for code to be easy to read, we just create it
@@ -151,22 +151,29 @@ func startBatchPTaskWorker(ms *Microservice, cfg IConfig) {
 	ms.PTaskWorker("/ptask/delivery", cfg.CacheServer(), cfg.MQServers(), func(ctx IContext) error {
 
 		newMS := NewMicroservice()
-		newMS.ConsumeBatch(cfg.MQServers(), cfg.CitizenConfirmedTopic(), "deliver-consumer", 5*time.Minute, 5, 5*time.Second, func(newCtx IContext) error {
-			inputs := newCtx.ReadInputs()
-			for _, input := range inputs {
-				newCtx.Log("Deliver to " + input)
-			}
+		newMS.ConsumeBatch(
+			cfg.MQServers(),
+			cfg.CitizenConfirmedTopic(),
+			"deliver-consumer",
+			5*time.Minute, // Read Timeout
+			5,             // Batch Size
+			5*time.Second, // Batch Timeout
+			func(newCtx IContext) error {
+				inputs := newCtx.ReadInputs()
+				for _, input := range inputs {
+					newCtx.Log("Deliver to " + input)
+				}
 
-			newMS.Stop()
-			return nil
-		})
+				newMS.Stop()
+				return nil
+			})
 		newMS.Start()
 		return nil
 	})
 }
 
 func start3rdPartyMockAPI(ms *Microservice, cfg IConfig) {
-	ms.POST("/validation", func(ctx IContext) error {
+	ms.POST("/3rd-party/validation", func(ctx IContext) error {
 		time.Sleep(1 * time.Second)
 		status := map[string]interface{}{
 			"status": "ok",
@@ -175,7 +182,7 @@ func start3rdPartyMockAPI(ms *Microservice, cfg IConfig) {
 		return nil
 	})
 
-	ms.POST("/delivery", func(ctx IContext) error {
+	ms.POST("/3rd-party/delivery", func(ctx IContext) error {
 		time.Sleep(1 * time.Second)
 		status := map[string]interface{}{
 			"status": "ok",
