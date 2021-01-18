@@ -64,6 +64,11 @@ func (ctx *AsyncTaskContext) Response(responseCode int, responseData interface{}
 	cacher.Set(ctx.ref, res, 30*time.Minute)
 }
 
+// Now return now
+func (ctx *AsyncTaskContext) Now() time.Time {
+	return time.Now()
+}
+
 // Cacher return cacher
 func (ctx *AsyncTaskContext) Cacher(server string) ICacher {
 	return ctx.ms.getCacher(server)

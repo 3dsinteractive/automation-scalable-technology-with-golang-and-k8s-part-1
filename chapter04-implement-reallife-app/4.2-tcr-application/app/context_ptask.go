@@ -139,6 +139,11 @@ func (ctx *PTaskContext) Response(responseCode int, responseData interface{}) {
 	}
 }
 
+// Now return now
+func (ctx *PTaskContext) Now() time.Time {
+	return time.Now()
+}
+
 // Cacher return cacher
 func (ctx *PTaskContext) Cacher(server string) ICacher {
 	return ctx.ms.getCacher(server)

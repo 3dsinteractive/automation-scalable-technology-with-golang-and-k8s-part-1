@@ -2,6 +2,7 @@
 package main
 
 import (
+	"encoding/json"
 	"net/http"
 	"time"
 )
@@ -25,25 +26,27 @@ func main() {
 		startBatchPTaskAPI(ms, cfg)
 	case "batch-ptask-worker":
 		startBatchPTaskWorker(ms, cfg)
+	case "3rd-party-api":
+		start3rdPartyMockAPI(ms, cfg)
 	}
 
 	ms.Start()
 }
 
 func startRegisterAPI(ms *Microservice, cfg IConfig) {
-	ms.POST("/citizen", func(ctx IContext) error {
-
+	ms.AsyncPOST("/citizen", cfg.CacheServer(), cfg.MQServers(), func(ctx IContext) error {
 		// 1. Read Input (Not using it right now, just for example)
 		input := ctx.ReadInput()
 		ctx.Log("POST: /citizen " + input)
 
 		// 2. Generate citizenID and send it to MQ
+		//    The citizen id should be received from client, but for code to be easy to read, we just create it
 		citizenID := randString()
 		citizen := map[string]interface{}{
 			"citizen_id": citizenID,
 		}
 		prod := ctx.Producer(cfg.MQServers())
-		err := prod.SendMessage("when-citizen-has-registered", "", citizen)
+		err := prod.SendMessage(cfg.CitizenRegisteredTopic(), "", citizen)
 		if err != nil {
 			ctx.Log(err.Error())
 			return err
@@ -60,27 +63,124 @@ func startRegisterAPI(ms *Microservice, cfg IConfig) {
 }
 
 func startMailConsumer(ms *Microservice, cfg IConfig) {
-	topic := "when-citizen-has-registered"
+	topic := cfg.CitizenRegisteredTopic()
 	groupID := "mail-consumer"
 	timeout := time.Duration(-1)
 
+	// 1. Create topic "citizen registered" if not exists
 	mq := NewMQ(cfg.MQServers(), ms)
 	mq.CreateTopicR(topic, 5, 1, time.Hour*24*30)
+
+	// 2. Start consumer to consume message from "citizen registered" topic
 	ms.Consume(cfg.MQServers(), topic, groupID, timeout, func(ctx IContext) error {
 		msg := ctx.ReadInput()
-		ctx.Log("Mail has sent to " + msg)
+
+		// 3. Parse input to citizen object
+		citizen := &Citizen{}
+		err := json.Unmarshal([]byte(msg), &citizen)
+		if err != nil {
+			ctx.Log(err.Error())
+			return err
+		}
+
+		// 4. Call validation API (Response AVG at 1 second, so we set timeout at 5 seconds)
+		req := ctx.Requester("", 5*time.Second)
+		validationResStr, err := req.Post(cfg.CitizenValidationAPI(), map[string]string{"citizen_id": citizen.CitizenID})
+		if err != nil {
+			ctx.Log(err.Error())
+			return err
+		}
+
+		validationRes := map[string]interface{}{}
+		err = json.Unmarshal([]byte(validationResStr), &validationRes)
+		if err != nil {
+			ctx.Log(err.Error())
+			return err
+		}
+
+		isValid, _ := validationRes["status"]
+		if isValid != "ok" {
+			// 5. Send Email to citizen to reject register if validation is not OK
+			//    We just log to console, but for the real code, this should send the email
+			ctx.Log("Mail rejection has sent to " + citizen.CitizenID)
+			return nil
+		}
+
+		// 6. Send Email to citizen to confirm validation
+		//    We just log to console, but for the real code, this should send the email
+		ctx.Log("Mail confirmation has sent to " + citizen.CitizenID)
+
+		// 7. Produce message to topic "citizen confirmed"
+		prod := ctx.Producer(cfg.MQServers())
+		err = prod.SendMessage(cfg.CitizenConfirmedTopic(), "", citizen)
+		if err != nil {
+			ctx.Log(err.Error())
+			return err
+		}
+
 		return nil
 	})
 }
 
 func startBatchScheduler(ms *Microservice, cfg IConfig) {
+	ms.Schedule(time.Hour, func(ctx IContext) error {
+		// 1. Batch Scheduler will run during 00.00 - 00.59
+		nowH := ctx.Now().Hour()
+		if nowH != 0 {
+			return nil
+		}
 
+		// 2. Will start PTask to execute all workers
+		rqt := ctx.Requester("", 30*time.Second) // This run only 1 time a day, to make sure it will run, use 30 secs timeout
+		res, err := rqt.Post(cfg.BatchDeliverAPI(), map[string]string{"task_id": "batch_deliver", "worker_count": "5"})
+		if err != nil {
+			ctx.Log(err.Error())
+			return err
+		}
+		ctx.Log(res)
+
+		return nil
+	})
 }
 
 func startBatchPTaskAPI(ms *Microservice, cfg IConfig) {
-
+	ms.PTask("/ptask/delivery", cfg.CacheServer(), cfg.MQServers())
 }
 
 func startBatchPTaskWorker(ms *Microservice, cfg IConfig) {
+	ms.PTaskWorker("/ptask/delivery", cfg.CacheServer(), cfg.MQServers(), func(ctx IContext) error {
 
+		newMS := NewMicroservice()
+		newMS.ConsumeBatch(cfg.MQServers(), cfg.CitizenConfirmedTopic(), "deliver-consumer", 5*time.Minute, 5, 5*time.Second, func(newCtx IContext) error {
+			inputs := newCtx.ReadInputs()
+			for _, input := range inputs {
+				newCtx.Log("Deliver to " + input)
+			}
+
+			newMS.Stop()
+			return nil
+		})
+		newMS.Start()
+		return nil
+	})
+}
+
+func start3rdPartyMockAPI(ms *Microservice, cfg IConfig) {
+	ms.POST("/validation", func(ctx IContext) error {
+		time.Sleep(1 * time.Second)
+		status := map[string]interface{}{
+			"status": "ok",
+		}
+		ctx.Response(http.StatusOK, status)
+		return nil
+	})
+
+	ms.POST("/delivery", func(ctx IContext) error {
+		time.Sleep(1 * time.Second)
+		status := map[string]interface{}{
+			"status": "ok",
+		}
+		ctx.Response(http.StatusOK, status)
+		return nil
+	})
 }

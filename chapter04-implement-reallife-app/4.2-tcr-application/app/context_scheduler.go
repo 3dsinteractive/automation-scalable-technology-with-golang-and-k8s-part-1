@@ -52,6 +52,11 @@ func (ctx *SchedulerContext) Response(responseCode int, responseData interface{}
 	return
 }
 
+// Now return now
+func (ctx *SchedulerContext) Now() time.Time {
+	return time.Now()
+}
+
 // Cacher return cacher
 func (ctx *SchedulerContext) Cacher(server string) ICacher {
 	return ctx.ms.getCacher(server)

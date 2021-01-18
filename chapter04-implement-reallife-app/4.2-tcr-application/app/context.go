@@ -12,6 +12,9 @@ type IContext interface {
 	ReadInput() string
 	ReadInputs() []string
 
+	// Time
+	Now() time.Time
+
 	// Dependency
 	Cacher(server string) ICacher
 	Producer(servers string) IProducer

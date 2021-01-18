@@ -60,6 +60,11 @@ func (ctx *HTTPContext) Response(responseCode int, responseData interface{}) {
 	ctx.c.JSON(responseCode, responseData)
 }
 
+// Now return now
+func (ctx *HTTPContext) Now() time.Time {
+	return time.Now()
+}
+
 // Cacher return cacher
 func (ctx *HTTPContext) Cacher(server string) ICacher {
 	return ctx.ms.getCacher(server)

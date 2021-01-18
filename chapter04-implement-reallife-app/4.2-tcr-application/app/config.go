@@ -8,6 +8,11 @@ type IConfig interface {
 	ServiceID() string
 	CacheServer() string
 	MQServers() string
+	CitizenRegisteredTopic() string
+	CitizenConfirmedTopic() string
+	CitizenValidationAPI() string
+	CitizenDeliveryAPI() string
+	BatchDeliverAPI() string
 }
 
 // Config implement IConfig
@@ -31,4 +36,29 @@ func (cfg *Config) CacheServer() string {
 // MQServers return Kafka servers
 func (cfg *Config) MQServers() string {
 	return os.Getenv("MQ_SERVERS")
+}
+
+// CitizenRegisteredTopic return topic name for registered event
+func (cfg *Config) CitizenRegisteredTopic() string {
+	return "when-citizen-has-registered"
+}
+
+// CitizenConfirmedTopic return topic name for confirmed event
+func (cfg *Config) CitizenConfirmedTopic() string {
+	return "when-citizen-has-confirmed"
+}
+
+// CitizenValidationAPI return API to validate citizen information
+func (cfg *Config) CitizenValidationAPI() string {
+	return "http://kubernetes.docker.internal/3rd-party/validate"
+}
+
+// CitizenDeliveryAPI return API to request delivery citizen ID card
+func (cfg *Config) CitizenDeliveryAPI() string {
+	return "http://kubernetes.docker.internal/3rd-party/delivery"
+}
+
+// BatchDeliverAPI return API to batch delivery citizen ID card
+func (cfg *Config) BatchDeliverAPI() string {
+	return "http://kubernetes.docker.internal/ptask/delivery"
 }
