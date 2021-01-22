@@ -1,0 +1,4 @@
+
+$ go mod init automationworkshop/main
+
+$ go run main.go
