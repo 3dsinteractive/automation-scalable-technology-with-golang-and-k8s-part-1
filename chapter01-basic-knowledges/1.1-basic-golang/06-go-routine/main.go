@@ -7,11 +7,27 @@ import (
 )
 
 func main() {
-	exitChannel := make(chan bool)
+
 	workerCount := 10
+
+	// 1. Use channel to receive data from go module
+	responseChannel := make(chan string)
 	for i := 0; i < workerCount; i++ {
 		workerID := fmt.Sprintf("worker-%d", i)
-		go worker(workerID, exitChannel)
+		go worker1(workerID, responseChannel)
+	}
+	for i := 0; i < workerCount; i++ {
+		res := <-responseChannel
+		println(res)
+	}
+	close(responseChannel)
+	println("All response returned")
+
+	// 2. Use channel to signal go module to exit
+	exitChannel := make(chan bool)
+	for i := 0; i < workerCount; i++ {
+		workerID := fmt.Sprintf("worker-%d", i)
+		go worker3(workerID, exitChannel)
 	}
 
 	time.Sleep(10 * time.Second)
@@ -20,11 +36,16 @@ func main() {
 	}
 	close(exitChannel)
 	time.Sleep(2 * time.Second)
-
 	println("Main is exited")
 }
 
-func worker(workerID string, exitChannel chan bool) {
+func worker1(workerID string, responseChannel chan string) {
+	// Simulate request latency
+	time.Sleep(1 * time.Second)
+	responseChannel <- (workerID + " Response")
+}
+
+func worker3(workerID string, exitChannel chan bool) {
 	i := 0
 	for true {
 		i++
