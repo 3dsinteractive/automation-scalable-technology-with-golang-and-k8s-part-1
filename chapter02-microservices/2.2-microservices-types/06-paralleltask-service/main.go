@@ -12,9 +12,11 @@ func main() {
 
 	cacheServer := "localhost:6379"
 	mqServers := "localhost:9094"
+
+	// 1. Start PTask endpoint
 	ms.PTask("/citizen/batch", cacheServer, mqServers)
 
-	// Start 3 workers
+	// 2. Start 3 workers
 	for i := 0; i < 3; i++ {
 		ms.PTaskWorker("/citizen/batch", cacheServer, mqServers, func(ctx IContext) error {
 			ctx.Log(ctx.ReadInput())

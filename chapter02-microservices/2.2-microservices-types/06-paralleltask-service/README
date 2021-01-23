@@ -1,3 +1,83 @@
+ParallelTask Service
 
+0. Look at slide ParallelTask Service
+
+1. Open vscode at chapter02-microservices/2.2-microservices-types/06-paralleltask-service
+
+2. Start kafka and zookeeper locally via docker
+$ docker-compose up -d
+* Wait until container is ready
+
+$ docker ps
+CONTAINER ID   IMAGE                          COMMAND                  CREATED         STATUS         PORTS                                        NAMES
+eecc315cc549   3dsinteractive/kafka:2.0       "/app-entrypoint.sh …"   2 minutes ago   Up 2 minutes   9092/tcp, 0.0.0.0:9094->9094/tcp             02-consumer-service_kafka_1
+67b5f2efaf0a   3dsinteractive/zookeeper:3.0   "/app-entrypoint.sh …"   2 minutes ago   Up 2 minutes   2888/tcp, 0.0.0.0:2181->2181/tcp, 3888/tcp   02-consumer-service_zookeeper_1
+
+3. Run command
 $ go mod init automationworkshop/main
 go: creating new go.mod: module automationworkshop/main
+
+4. Run command
+$ go build .
+$ ./main
+
+5. Run command
+$ curl -X POST "localhost:8080/citizen/batch?task_id=12345&worker_count=5" -d '{"input1":"value1"}'
+{"task_id":"1234"}
+
+6. Run command
+$ curl -X GET "localhost:8080/citizen/batch?task_id=12345"
+
+{
+  "status": "complete",
+  "workers": [
+    {
+      "code": 200,
+      "error": "",
+      "response": {
+        "id": "123"
+      },
+      "status": "complete",
+      "worker_id": "ptask-12345-4751997750760398084"
+    },
+    {
+      "code": 200,
+      "error": "",
+      "response": {
+        "id": "123"
+      },
+      "status": "complete",
+      "worker_id": "ptask-12345-7504504064263669287"
+    },
+    {
+      "code": 200,
+      "error": "",
+      "response": {
+        "id": "123"
+      },
+      "status": "complete",
+      "worker_id": "ptask-12345-1976235410884491574"
+    },
+    {
+      "code": 200,
+      "error": "",
+      "response": {
+        "id": "123"
+      },
+      "status": "complete",
+      "worker_id": "ptask-12345-3510942875414458836"
+    },
+    {
+      "code": 200,
+      "error": "",
+      "response": {
+        "id": "123"
+      },
+      "status": "complete",
+      "worker_id": "ptask-12345-2933568871211445515"
+    }
+  ]
+}
+
+7. Run command to cleanup
+$ docker-compose down
