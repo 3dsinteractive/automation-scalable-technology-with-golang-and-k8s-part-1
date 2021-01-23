@@ -1,5 +1,7 @@
 Run Nginx with Docker
 
+0. Look at slides 1.6 Basic Docker (Why we need Docker?)
+
 1. Open vscode at chapter01-basic-knowledges/1.2-basic-docker/02-run-nginx-with-docker
 
 2. Run command
