@@ -1,6 +1,100 @@
+Service Startup and Teardown
+
+1. Open vscode at chapter02-microservices/2.3-service-startup-teardown
 
 
+2. Start kafka and zookeeper locally via docker
+$ docker-compose up -d
+* Wait until container is ready
+
+$ docker ps
+CONTAINER ID   IMAGE                          COMMAND                  CREATED         STATUS         PORTS                                        NAMES
+eecc315cc549   3dsinteractive/kafka:2.0       "/app-entrypoint.sh …"   2 minutes ago   Up 2 minutes   9092/tcp, 0.0.0.0:9094->9094/tcp             02-consumer-service_kafka_1
+67b5f2efaf0a   3dsinteractive/zookeeper:3.0   "/app-entrypoint.sh …"   2 minutes ago   Up 2 minutes   2888/tcp, 0.0.0.0:2181->2181/tcp, 3888/tcp   02-consumer-service_zookeeper_1
+
+3. Run command
 $ go mod init automationworkshop/main
 go: creating new go.mod: module automationworkshop/main
 
-kill -15 
+4. Run command
+$ go build .
+$ ./main
+
+Scheduler: main.go 131 Tick at 22:18:21
+Scheduler: main.go 131 Tick at 22:18:22
+Scheduler: main.go 131 Tick at 22:18:23
+Scheduler: main.go 131 Tick at 22:18:24
+Scheduler: main.go 131 Tick at 22:18:25
+Scheduler: main.go 131 Tick at 22:18:26
+Scheduler: main.go 131 Tick at 22:18:27
+Batch Consumer: main.go 106 Begin Batch
+Batch Consumer: main.go 108 {"message_id":0}
+Batch Consumer: main.go 108 {"message_id":1}
+Batch Consumer: main.go 108 {"message_id":2}
+Batch Consumer: main.go 110 End Batch
+Batch Consumer: main.go 106 Begin Batch
+Batch Consumer: main.go 108 {"message_id":3}
+Batch Consumer: main.go 108 {"message_id":4}
+Batch Consumer: main.go 108 {"message_id":5}
+Batch Consumer: main.go 110 End Batch
+Consumer: main.go 79 {"message_id":0}
+Consumer: main.go 79 {"message_id":1}
+Consumer: main.go 79 {"message_id":2}
+Consumer: main.go 79 {"message_id":3}
+Consumer: main.go 79 {"message_id":4}
+Consumer: main.go 79 {"message_id":5}
+Consumer: main.go 79 {"message_id":6}
+Scheduler: main.go 131 Tick at 22:18:28
+Consumer: main.go 79 {"message_id":7}
+Scheduler: main.go 131 Tick at 22:18:29
+Consumer: main.go 79 {"message_id":8}
+Batch Consumer: main.go 106 Begin Batch
+Batch Consumer: main.go 108 {"message_id":6}
+Batch Consumer: main.go 108 {"message_id":7}
+Batch Consumer: main.go 108 {"message_id":8}
+Batch Consumer: main.go 110 End Batch
+Scheduler: main.go 131 Tick at 22:18:30
+Consumer: main.go 79 {"message_id":9}
+Scheduler: main.go 131 Tick at 22:18:31
+MS: microservice.go 662 Start cleanup
+PROD: producer.go 83 Close successfullyScheduler: main.go 131 Tick at 22:18:21
+Scheduler: main.go 131 Tick at 22:18:22
+Scheduler: main.go 131 Tick at 22:18:23
+Scheduler: main.go 131 Tick at 22:18:24
+Scheduler: main.go 131 Tick at 22:18:25
+Scheduler: main.go 131 Tick at 22:18:26
+Scheduler: main.go 131 Tick at 22:18:27
+Batch Consumer: main.go 106 Begin Batch
+Batch Consumer: main.go 108 {"message_id":0}
+Batch Consumer: main.go 108 {"message_id":1}
+Batch Consumer: main.go 108 {"message_id":2}
+Batch Consumer: main.go 110 End Batch
+Batch Consumer: main.go 106 Begin Batch
+Batch Consumer: main.go 108 {"message_id":3}
+Batch Consumer: main.go 108 {"message_id":4}
+Batch Consumer: main.go 108 {"message_id":5}
+Batch Consumer: main.go 110 End Batch
+Consumer: main.go 79 {"message_id":0}
+Consumer: main.go 79 {"message_id":1}
+Consumer: main.go 79 {"message_id":2}
+Consumer: main.go 79 {"message_id":3}
+Consumer: main.go 79 {"message_id":4}
+Consumer: main.go 79 {"message_id":5}
+Consumer: main.go 79 {"message_id":6}
+Scheduler: main.go 131 Tick at 22:18:28
+Consumer: main.go 79 {"message_id":7}
+Scheduler: main.go 131 Tick at 22:18:29
+Consumer: main.go 79 {"message_id":8}
+Batch Consumer: main.go 106 Begin Batch
+Batch Consumer: main.go 108 {"message_id":6}
+Batch Consumer: main.go 108 {"message_id":7}
+Batch Consumer: main.go 108 {"message_id":8}
+Batch Consumer: main.go 110 End Batch
+Scheduler: main.go 131 Tick at 22:18:30
+Consumer: main.go 79 {"message_id":9}
+Scheduler: main.go 131 Tick at 22:18:31
+MS: microservice.go 662 Start cleanup
+PROD: producer.go 83 Close successfully
+
+5. Run command to cleanup
+$ docker-compose down

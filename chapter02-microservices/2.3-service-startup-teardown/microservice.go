@@ -190,7 +190,7 @@ func (ms *Microservice) handlePTaskPOST(path string, cacheServer string, mqServe
 
 	// 6. Response task_id
 	res := map[string]string{
-		"task_id": taskID,
+		"task_id": taskIDParam,
 	}
 	ctx.Response(http.StatusOK, res)
 	return nil
@@ -244,7 +244,7 @@ func (ms *Microservice) PTask(path string, cacheServer string, mqServers string)
 func (ms *Microservice) startAsyncTaskConsumer(path string, cacheServer string, mqServers string, h ServiceHandleFunc) {
 	topic := escapeName(path)
 	mq := NewMQ(mqServers, ms)
-	err := mq.CreateTopicR(topic, 5, 0, time.Hour*24*30) // retain message for 30 days
+	err := mq.CreateTopicR(topic, 5, 1, time.Hour*24*30) // retain message for 30 days
 	if err != nil {
 		ms.Log("ATASK", err.Error())
 	}
