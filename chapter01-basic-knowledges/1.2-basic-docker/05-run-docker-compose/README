@@ -1,0 +1,15 @@
+Run Docker compose
+
+1. Open vscode at chapter01-basic-knowledges/1.2-basic-docker/05-run-docker-compose
+
+2. Run command
+$ docker-compose up -d
+$ docker ps
+
+3. Run command
+$ curl -X GET "localhost:8080"
+
+4. Explain section in docker-compose.yml
+
+5. Run command
+$ docker-compose down

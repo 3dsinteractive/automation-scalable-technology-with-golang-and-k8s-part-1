@@ -2,7 +2,6 @@ version: "3"
 services:
   lb:
     image: 3dsinteractive/nginx:1.12
-    container_name: lb
     depends_on:
       - mynginx1
       - mynginx2
@@ -14,6 +13,6 @@ services:
       - ./dockers/lb/logs:/opt/bitnami/nginx/logs
       - ./dockers/lb/nginx:/bitnami/nginx
   mynginx1:
-    image: 3dsinteractive/mynginx:1.12
+    image: 3dsinteractive/mynginx:1.0
   mynginx2:
-    image: 3dsinteractive/mynginx:1.12
+    image: 3dsinteractive/mynginx:1.0
