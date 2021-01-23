@@ -1,3 +1,33 @@
+AsyncTask Service
 
+0. Look at slide AsyncTask Service
+
+1. Open vscode at chapter02-microservices/2.2-microservices-types/05-asynctask-service
+
+2. Start kafka and zookeeper locally via docker
+$ docker-compose up -d
+* Wait until container is ready
+
+$ docker ps
+CONTAINER ID   IMAGE                          COMMAND                  CREATED         STATUS         PORTS                                        NAMES
+eecc315cc549   3dsinteractive/kafka:2.0       "/app-entrypoint.sh …"   2 minutes ago   Up 2 minutes   9092/tcp, 0.0.0.0:9094->9094/tcp             02-consumer-service_kafka_1
+67b5f2efaf0a   3dsinteractive/zookeeper:3.0   "/app-entrypoint.sh …"   2 minutes ago   Up 2 minutes   2888/tcp, 0.0.0.0:2181->2181/tcp, 3888/tcp   02-consumer-service_zookeeper_1
+
+3. Run command
 $ go mod init automationworkshop/main
 go: creating new go.mod: module automationworkshop/main
+
+4. Run command
+$ go build .
+$ ./main
+
+5. Open another terminal and run command 
+curl -X POST "localhost:8080/citizen/register" -d '{"firstname":"chaiyapong"}'
+{"ref":"atask-xxxxxxxxxxx"}
+
+6. Run command 
+curl -X GET "localhost:8080/citizen/register?ref=atask-xxxxxxxxxxx"
+{"code":200,"data":{"id":"123"},"status":"success"}
+
+7. Run command for cleanup
+$ docker-compose down

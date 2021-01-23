@@ -57,7 +57,7 @@ func NewMicroservice() *Microservice {
 func (ms *Microservice) startAsyncTaskConsumer(path string, cacheServer string, mqServers string, h ServiceHandleFunc) {
 	topic := escapeName(path)
 	mq := NewMQ(mqServers, ms)
-	err := mq.CreateTopicR(topic, 5, 0, time.Hour*24*30) // retain message for 30 days
+	err := mq.CreateTopicR(topic, 5, 1, time.Hour*24*30) // retain message for 30 days
 	if err != nil {
 		ms.Log("ATASK", err.Error())
 	}
