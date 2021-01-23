@@ -1,7 +1,10 @@
+Push docker image
 
+0. Look at slides 1.2 Basic Docker (Docker images and containers)
 
-Register for https://hub.docker.com
+1. Register for https://hub.docker.com
 
-Create public repository call [your-docker-name]/mynginx:1.12
+2. Create public repository call [your-docker-name]/mynginx:1.12
 
+3. Run command 
 $ docker push 3dsinteractive/mynginx:1.12
