@@ -1,0 +1,2 @@
+
+$ docker build -t 3dsinteractive/mynginx:1.0 .
