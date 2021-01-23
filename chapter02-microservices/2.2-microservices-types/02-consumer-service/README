@@ -1,5 +1,7 @@
 Consumer Service
 
+0. Look at slides Consumer service
+
 1. Open vscode at chapter02-microservices/2.2-microservices-types/02-consumer-service
 
 2. Start kafka and zookeeper locally via docker

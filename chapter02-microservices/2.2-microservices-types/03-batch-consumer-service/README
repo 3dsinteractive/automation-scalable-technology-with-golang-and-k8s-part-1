@@ -1,10 +1,46 @@
+Batch Consumer
 
+0. Look at slide Batch Consumer Service
 
-Start kafka and zookeeper locally via docker
+1. open vscode at chapter02-microservices/2.2-microservices-types/03-batch-consumer-service
+
+2. Start kafka and zookeeper locally via docker
 $ docker-compose up -d
+* Wait until container is ready
 
 $ docker ps
 CONTAINER ID   IMAGE                          COMMAND                  CREATED         STATUS         PORTS                                        NAMES
 eecc315cc549   3dsinteractive/kafka:2.0       "/app-entrypoint.sh …"   2 minutes ago   Up 2 minutes   9092/tcp, 0.0.0.0:9094->9094/tcp             02-consumer-service_kafka_1
 67b5f2efaf0a   3dsinteractive/zookeeper:3.0   "/app-entrypoint.sh …"   2 minutes ago   Up 2 minutes   2888/tcp, 0.0.0.0:2181->2181/tcp, 3888/tcp   02-consumer-service_zookeeper_1
 
+3. Run command
+$ go mod init automationworkshop/main
+go: creating new go.mod: module automationworkshop/main
+
+4. Run command
+$ go build .
+$ ./main
+
+Batch Consumer:  Begin Batch
+Batch Consumer:  {"message_id":0}
+Batch Consumer:  {"message_id":1}
+Batch Consumer:  {"message_id":2}
+Batch Consumer:  End Batch
+Batch Consumer:  Begin Batch
+Batch Consumer:  {"message_id":3}
+Batch Consumer:  End Batch
+Batch Consumer:  Begin Batch
+Batch Consumer:  {"message_id":4}
+Batch Consumer:  {"message_id":5}
+Batch Consumer:  {"message_id":6}
+Batch Consumer:  End Batch
+Batch Consumer:  Begin Batch
+Batch Consumer:  {"message_id":7}
+Batch Consumer:  {"message_id":8}
+Batch Consumer:  End Batch
+Batch Consumer:  Begin Batch
+Batch Consumer:  {"message_id":9}
+Batch Consumer:  End Batch
+
+5. Run command to cleanup
+$ docker-compose down
