@@ -1,0 +1,12 @@
+
+0. See what is Go Routine and Go Channel in Slides
+
+1. Open vscode at chapter01-basic-knowledges/1.1-basic-golang/06-go-routine
+
+2. Run command
+$ go init automationworkshop/main
+
+3. Run program
+$ go run main.go
+
+4. Code are explained in comments.

@@ -11,6 +11,7 @@ func main() {
 	workerCount := 10
 
 	// 1. Use channel to receive data from go module
+	//    Send data from module back to outside
 	responseChannel := make(chan string)
 	for i := 0; i < workerCount; i++ {
 		workerID := fmt.Sprintf("worker-%d", i)
@@ -24,6 +25,7 @@ func main() {
 	println("All response returned")
 
 	// 2. Use channel to signal go module to exit
+	//    Send data from outside go model into module
 	exitChannel := make(chan bool)
 	for i := 0; i < workerCount; i++ {
 		workerID := fmt.Sprintf("worker-%d", i)
