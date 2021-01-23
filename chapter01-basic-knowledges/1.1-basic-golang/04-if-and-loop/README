@@ -1,91 +1,55 @@
+If and Loop
 
-Run command
+1. Open vscode in chapter01-basic-knowledges/1.1-basic-golang/04-if-and-loop
+
+2. Run command
 $ go mod init automationworkshop/main
 go: creating new go.mod: module automationworkshop/main
 
+3. Run Program
 $ go run main.go
-string =  CitizenID 1234, you are logged in
+CitizenID 1234, you are logged in
 ---
-string =  You are Female
+You are Female
 ---
-string =  Loop i=0
-string =  Loop i=1
-string =  Loop i=2
-string =  Loop i=3
-string =  Loop i=4
-string =  Loop i=5
-string =  Loop i=6
-string =  Loop i=7
-string =  Loop i=8
-string =  Loop i=9
+Loop i=0
+Loop i=1
+Loop i=2
+Loop i=3
+Loop i=4
+Loop i=5
+Loop i=6
+Loop i=7
+Loop i=8
+Loop i=9
 ---
-string =  Country 0=Thailand
-string =  Country 1=Japan
-string =  Country 2=China
-string =  Country 3=Korea
-string =  Country 4=Vietnam
+Country 0=Thailand
+Country 1=Japan
+Country 2=China
+Country 3=Korea
+Country 4=Vietnam
 ---
-string =  For i=1
-string =  For i=2
-string =  For i=3
-string =  For i=4
-string =  For i=5
-string =  For i=6
-string =  For i=7
-string =  For i=8
-string =  For i=9
-string =  For i=10
+For i=1
+For i=2
+For i=3
+For i=4
+For i=5
+For i=6
+For i=7
+For i=8
+For i=9
+For i=10
 ---
-string =  For n=1
-string =  For n=2
-string =  For n=3
-string =  For n=4
-string =  For n=5
-string =  For n=6
-string =  For n=7
-string =  For n=8
-string =  For n=9
-string =  For n=10
-string =  For n=11string =  CitizenID 1234, you are logged in
----
-string =  You are Female
----
-string =  Loop i=0
-string =  Loop i=1
-string =  Loop i=2
-string =  Loop i=3
-string =  Loop i=4
-string =  Loop i=5
-string =  Loop i=6
-string =  Loop i=7
-string =  Loop i=8
-string =  Loop i=9
----
-string =  Country 0=Thailand
-string =  Country 1=Japan
-string =  Country 2=China
-string =  Country 3=Korea
-string =  Country 4=Vietnam
----
-string =  For i=1
-string =  For i=2
-string =  For i=3
-string =  For i=4
-string =  For i=5
-string =  For i=6
-string =  For i=7
-string =  For i=8
-string =  For i=9
-string =  For i=10
----
-string =  For n=1
-string =  For n=2
-string =  For n=3
-string =  For n=4
-string =  For n=5
-string =  For n=6
-string =  For n=7
-string =  For n=8
-string =  For n=9
-string =  For n=10
-string =  For n=11
+For n=1
+For n=2
+For n=3
+For n=4
+For n=5
+For n=6
+For n=7
+For n=8
+For n=9
+For n=10
+For n=11
+
+4. Explain are in the source code comment

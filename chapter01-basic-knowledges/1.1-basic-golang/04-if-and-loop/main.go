@@ -13,28 +13,28 @@ func main() {
 
 	// 1. If
 	if citizenID == "1234" && password == "Helloworld" {
-		printString("CitizenID 1234, you are logged in")
+		println("CitizenID 1234, you are logged in")
 	} else if citizenID == "5678" && password == "Helloworld" {
-		printString("CitizenID 5678, you are logged in")
+		println("CitizenID 5678, you are logged in")
 	} else {
-		printString("You are not logged in")
+		println("You are not logged in")
 	}
 	printUnderline()
 
 	// 2. Switch
 	switch gender {
 	case Female:
-		printString("You are Female")
+		println("You are Female")
 	case Male:
-		printString("You are Male")
+		println("You are Male")
 	default:
-		printString("Gender is not specify")
+		println("Gender is not specify")
 	}
 	printUnderline()
 
 	// 3. For i
 	for i := 0; i < 10; i++ {
-		printString(fmt.Sprintf("Loop i=%d", i))
+		println(fmt.Sprintf("Loop i=%d", i))
 	}
 	printUnderline()
 
@@ -47,15 +47,19 @@ func main() {
 		"Vietnam",
 	}
 	for i, country := range countries {
-		printString(fmt.Sprintf("Country %d=%s", i, country))
+		println(fmt.Sprintf("Country %d=%s", i, country))
 	}
+	// Note: for range without index use underscore at first variable
+	// for _, country := range countries {
+	// 	println(fmt.Sprintf("Country %s", country))
+	// }
 	printUnderline()
 
 	// 5. For condition
 	i := 0
 	for i < 10 {
 		i++
-		printString(fmt.Sprintf("For i=%d", i))
+		println(fmt.Sprintf("For i=%d", i))
 	}
 	printUnderline()
 
@@ -63,7 +67,7 @@ func main() {
 	n := 0
 	for {
 		n++
-		printString(fmt.Sprintf("For n=%d", n))
+		println(fmt.Sprintf("For n=%d", n))
 		if n > 10 {
 			break
 		}
