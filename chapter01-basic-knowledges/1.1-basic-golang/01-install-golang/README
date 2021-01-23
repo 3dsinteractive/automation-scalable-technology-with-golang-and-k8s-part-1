@@ -1,11 +1,9 @@
-1.1.01 Install Golang
+Install Golang
 
-1. Enter website https://golang.org/doc/install
+1. Install Golang by Google "install golang"
 
 2. Download installer according to your platform (Mac, Windows, Ubuntu, etc)
 
 3. After install open terminal and run command
 $ go version
-
-4. Terminal will display something like (according to your operating system and your Go version)
 go version go1.14.4 darwin/amd64

@@ -1,6 +1,6 @@
-1.1.2 First Program
+First Program
 
-1. Download and install VSCode https://code.visualstudio.com/download
+1. Download and install VSCode (Use Google to search for "install vscode")
 
 2. Use VSCode to Open directory automation-scalable-technology-with-golang-and-k8s-part-1
 
@@ -20,4 +20,5 @@ My First Program
 7. Run command
 $ cd ../../../
 
-8. You will be at root of project ready to move to next lesson
+8. Explain sourcecode
+
