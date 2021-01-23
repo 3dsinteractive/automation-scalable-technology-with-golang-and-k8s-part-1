@@ -1,0 +1,34 @@
+
+Kafkacat URL
+https://github.com/edenhill/kafkacat
+
+$ kubectl apply -f .
+
+$ kubectl get po -n basic-kafka
+NAME                    READY   STATUS    RESTARTS   AGE
+client-util             1/1     Running   0          5m28s
+kfk1-86886b6b84-75p7p   1/1     Running   2          5m29s
+kfk2-5b69dfcdb4-wk9lt   1/1     Running   2          5m29s
+kfk3-6d4c8874c6-47dxp   1/1     Running   2          5m29s
+zk1-76cc547698-8865g    1/1     Running   0          5m29s
+zk2-7bb59d6788-5dfxx    1/1     Running   0          5m29s
+zk3-566db54d6b-xqjzh    1/1     Running   0          5m29s
+
+$ kubectl exec -it client-util -n basic-kafka -- bash
+root@client-util:/#
+
+Start Producer
+$ kafkacat -P -b "kfk1" -t "mytopic"
+
+$ message1
+$ message2
+$ message3
+
+// Open another tab in terminal
+
+$ kubectl exec -it client-util -n basic-kafka -- bash
+root@client-util:/#
+
+Start Consumer
+$ kafkacat -C -b "kfk1" -t mytopic
+
