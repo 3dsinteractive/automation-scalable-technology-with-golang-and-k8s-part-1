@@ -114,7 +114,7 @@ func (ms *Microservice) handlePTaskPOST(path string, cacheServer string, mqServe
 
 	// 6. Response task_id
 	res := map[string]string{
-		"task_id": taskID,
+		"task_id": taskIDParam,
 	}
 	ctx.Response(http.StatusOK, res)
 	return nil
