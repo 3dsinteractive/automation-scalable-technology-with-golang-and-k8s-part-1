@@ -1,23 +1,29 @@
-2.2.1 HTTP service
+HTTP service
 
-$ cd chapter02-microservices/2.2-microservices-types/01-http-service
+1. Open chapter02-microservices/2.2-microservices-types/01-http-service
 
+2. Run command
 $ go mod init automationworkshop/main
 go: creating new go.mod: module automationworkshop/main
 
+3. Run command
 $ go build .
 $ ./main
 
+4. Run command
 $ curl -X POST "localhost:8080/citizen"
 {"status":"success"}
 
+5. Run command
 $ curl -X PUT "localhost:8080/citizen/123"
 {"id":"123"}
 
+6. Run command
 $ curl -X GET "localhost:8080/citizen/123?page=2"
 {"id":"123","page":"2"}
 
+7. Run command
 $ curl -X DELETE "localhost:8080/citizen/123"
 {"status":"success"}
 
-$ cd ../../../
+8. Explain the service in source code

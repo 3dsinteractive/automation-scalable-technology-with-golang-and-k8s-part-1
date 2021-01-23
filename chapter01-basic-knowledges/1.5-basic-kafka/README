@@ -1,5 +1,0 @@
-1.4.01 Run kafka in kubernetes cluster
-1.4.02 Run client utility in kubernetes cluster
-1.4.03 Play with Consumer and Producer
-1.4.04 Play with Consumer Group
-1.4.05 Use Kafkacat to list messages
