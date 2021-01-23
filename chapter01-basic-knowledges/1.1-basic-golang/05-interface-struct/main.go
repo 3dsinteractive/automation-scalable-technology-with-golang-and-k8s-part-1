@@ -5,15 +5,28 @@ import (
 	"fmt"
 )
 
+// ICitizenService is the interface for citizen service
+type ICitizenService interface {
+	Validate(c *Citizen) bool
+	CreateCitizenCard(c *Citizen) error
+}
+
 func main() {
+	// 1. Constructor function will return struct pointer
 	citizen := NewCitizen("Chaiyapong", "Lapliengtrakul", "1122334455")
 	citizenSvc := NewCititzenService()
 
+	// 2. Function that accept interface, the argument must implement function declare in interface
+	//    In this case CitizenService struct must implement ICitizenService
 	err := createCitizenCard(citizenSvc, citizen)
 	if err != nil {
 		printError(err)
 	}
 	printUnderline()
+
+	// 3. Struct that doesn't implement interface cannot send as argument to the function with interface
+	// anotherSvc := NewAnotherService()
+	// createCitizenCard(anotherSvc, citizen) // This will error
 }
 
 func createCitizenCard(svc ICitizenService, c *Citizen) error {
@@ -45,12 +58,6 @@ func NewCitizen(firstname string, lastname string, citizenID string) *Citizen {
 	}
 }
 
-// ICitizenService is the interface for citizen service
-type ICitizenService interface {
-	Validate(c *Citizen) bool
-	CreateCitizenCard(c *Citizen) error
-}
-
 // CitizenService is the service to work with citizen data
 type CitizenService struct {
 }
@@ -68,8 +75,16 @@ func (svc *CitizenService) Validate(c *Citizen) bool {
 // CreateCitizenCard will request API to create citizen card if citizen information is valid
 func (svc *CitizenService) CreateCitizenCard(c *Citizen) error {
 	// TODO: Request API to create citizen card
-	print(fmt.Sprintf("Successfully create citizen card for ID=%s", c.CitizenID))
+	println(fmt.Sprintf("Successfully create citizen card for ID=%s", c.CitizenID))
 	return nil
+}
+
+// AnotherService is another service
+type AnotherService struct{}
+
+// NewAnotherService return new instance of another service
+func NewAnotherService() *AnotherService {
+	return &AnotherService{}
 }
 
 func printError(err error) {

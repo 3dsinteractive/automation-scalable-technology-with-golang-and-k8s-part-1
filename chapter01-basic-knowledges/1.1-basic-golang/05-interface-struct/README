@@ -1,4 +1,12 @@
 
+1. Open vscode at chapter01-basic-knowledges/1.1-basic-golang/05-interface-struct
+
+2. Run command
 $ go mod init automationworkshop/main
 
+3. Run program
 $ go run main.go
+Successfully create citizen card for ID=1122334455
+---
+
+4. Code explain in comments
