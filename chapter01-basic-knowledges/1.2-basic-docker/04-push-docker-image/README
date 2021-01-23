@@ -1,0 +1,7 @@
+
+
+Register for https://hub.docker.com
+
+Create public repository call [your-docker-name]/mynginx:1.12
+
+$ docker push 3dsinteractive/mynginx:1.12
