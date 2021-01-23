@@ -5,23 +5,18 @@ First Program
    
 1. Download and install VSCode (Use Google to search for "install vscode")
 
-2. Use VSCode to Open directory automation-scalable-technology-with-golang-and-k8s-part-1
+2. Open vscode at directory chapter01-basic-knowledges/1.1-basic-golang/02-first-program
 
 3. Open terminal in VSCode using (Ctrl + ~)
 
 4. Run command
-$ cd chapter01-basic-knowledges/1.1-basic-golang/02-first-program
-
-5. Run command
 $ go mod init automationworkshop/main
 go: creating new go.mod: module automationworkshop/main
 
-6. Run command
+5. Run command
 $ go run main.go
 My First Program
 
-7. Run command
-$ cd ../../../
+6. Program are described by the comment in sourcecode
 
-8. Explain sourcecode
 

@@ -1,17 +1,14 @@
-1.1.3 Variables and Types
+Variables and Types
 
-1. Use VSCode to Open directory automation-scalable-technology-with-golang-and-k8s-part-1
+1. Open vscode at directory chapter01-basic-knowledges/1.1-basic-golang/03-variable-types
 
 2. Open terminal in VSCode using (Shortcut Ctrl + ~)
 
 3. Run command
-$ cd chapter01-basic-knowledges/1.1-basic-golang/03-variable-types
-
-4. Run command
 $ go mod init automationworkshop/main
 go: creating new go.mod: module automationworkshop/main
 
-5. Run command
+4. Run command
 $ go run main.go
 string =  This variable type string
 int =  305
@@ -38,7 +35,4 @@ Gender is Unspecify
 Gender =  UNSPECIFY
 ---
 
-6. Run command
-$ cd ../../../
-
-7. You will be at root of project ready to move to next lesson
+5. Sourcecode are described by the comments

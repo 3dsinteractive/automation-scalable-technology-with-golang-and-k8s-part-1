@@ -7,31 +7,33 @@ import (
 
 func main() {
 	// 1. Literal types
-	// Literal type copy by value
+	// Note: Literal type copy by value
 	theString := "This variable type string"
 	theInt := 305
 	theBool := true
 	printString(theString)
-	// printString(theInt) // Compile error
 	printInt(theInt)
 	printBool(theBool)
 	printUnderline()
+	// 2. Type in Golang are static type
+	// printString(theInt) // Compile error
 
-	// 2. interface{} type
+	// 3. interface{} type can accept all types
 	printInterface(theString)
 	printInterface(theInt)
 	printInterface(theBool)
 	printUnderline()
 
-	// 3. map type
-	// - Map pass by pointer of map
+	// 4. map type
+	// Note: Map variable is the pointer of map, pass by pointer of map
 	theMap := map[string]interface{}{}
 	theMap["firstname"] = "Chaiyapong"
 	theMap["lastname"] = "Lapliengtrakul"
 	theMap["citizen_id"] = "1234"
 	printMap(theMap)
+	// updateMap(theMap) // This will update map that pass in to function
 	printMapAsJSON(theMap)
-	// - Use 2 variables to get map value
+	// Note: We can use 2 variables to get map value
 	gender, ok := theMap["gender"]
 	if ok {
 		fmt.Println("gender is ", gender.(string)) // Casting
@@ -41,44 +43,50 @@ func main() {
 
 	printUnderline()
 
-	// 4. slice type (array)
-	// - We should name slice phurally
-	// - Slices pass by pointer of slice
+	// 5. slice type (dynamic array)
+	// Note: We should name slice phurally
+	// Note: Slices pass by pointer of slice (just like map)
 	theSlices := []string{}
 	theSlices = append(theSlices, "item 1")
 	theSlices = append(theSlices, "item 2")
 	theSlices = append(theSlices, "item 3")
 	printSlice(theSlices)
+	// updateSliceIndex0(theSlices) // This will update value of index 0 of slice
 	printSliceAsJSON(theSlices)
 	printUnderline()
 
-	// 5. Struct type
-	// - It is my practice to always create struct variable as pointer
-	//   to avoid confusion in team member
-	// - JSON marshal will use struct tag
+	// 6. Struct type
+	// Note: It is my practice to always create struct variable as pointer (*Type)
+	//   to avoid confusion in team member, so will can always assume that strut is a pointer
 	theCitizen := &Citizen{
 		Firstname: "Chaiyapong",
 		Lastname:  "Lapliengtrakul",
 		CitizenID: "1234",
 	}
 	printCitizen(theCitizen)
+	// Note: JSON marshal will use struct tag
 	printCitizenAsJSON(theCitizen)
 	printUnderline()
 
-	// 6. nil value
-	// - Literal cannot be nil
-	// map, slice and struct and be nil
+	// 7. nil value
+	// Note: Literal cannot be nil (string, int, bool, ..)
 	// theString = nil // Error
 	// theInt = nil    // Error
 	// theBool = nil   // Error
+
+	// Note: map, slice and struct and be nil
 	theMap = nil
 	theSlices = nil
 	theCitizen = nil
+
+	// Note: assign value to nil map and struct will cause runtime error
 	// theMap["key"] = "value" // Runtime Error
 	// theCitizen.Firstname = "Chaiyapong" // Runtime Error
+
+	// Note: append value to nil slice is OK
 	theSlices = append(theSlices, "value") // OK
 
-	// 7. Check nil or zero using len()
+	// 8. Check nil or zero using len()
 	if len(theMap) == 0 {
 		fmt.Println("theMap is nil")
 	}
@@ -90,7 +98,7 @@ func main() {
 	}
 	printUnderline()
 
-	// 8. Enum
+	// 9. Enum is just constant in golang
 	theGender := Male
 	theGender = Female
 	theGender = Unspecify
@@ -130,6 +138,10 @@ func printMap(input map[string]interface{}) {
 	fmt.Println("map = ", input)
 }
 
+func updateMap(input map[string]interface{}) {
+	input["updated"] = true
+}
+
 func printMapAsJSON(input map[string]interface{}) {
 	js, _ := json.Marshal(input)
 	fmt.Println("map JSON = ", string(js))
@@ -137,6 +149,10 @@ func printMapAsJSON(input map[string]interface{}) {
 
 func printSlice(input []string) {
 	fmt.Println("slice = ", input)
+}
+
+func updateSliceIndex0(input []string) {
+	input[0] = "Item 0"
 }
 
 func printSliceAsJSON(input []string) {
