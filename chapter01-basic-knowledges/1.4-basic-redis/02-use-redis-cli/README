@@ -1,0 +1,48 @@
+
+
+$ kubectl exec -it client-util -n basic-redis -- bash
+
+$ redis-cli -h redis
+redis:6379>
+
+$ SET "mykey" "myvalue"
+OK
+
+$ GET "mykey"
+"myvalue"
+
+$ EXPIRE "mykey" 10
+(integer) 1
+
+** Wait 10 seconds
+
+$ GET "mykey"
+(nil)
+
+$ SET "mykey2" "myvalue2"
+OK
+
+$ GET "mykey2"
+"myvalue2"
+
+$ DEL "mykey2"
+(integer) 1
+
+$ GET "mykey2"
+(nil)
+
+$ SET "mykey1" "value1"
+$ SET "mykey2" "value2"
+
+$ KEYS "mykey*"
+1) "mykey2"
+2) "mykey1"
+
+// Exit from redis 
+$ exit
+
+// Exit from client-util
+$ exit
+
+// CLEAN UP WORKSHOP
+$ kubectl delete ns basic-redis
