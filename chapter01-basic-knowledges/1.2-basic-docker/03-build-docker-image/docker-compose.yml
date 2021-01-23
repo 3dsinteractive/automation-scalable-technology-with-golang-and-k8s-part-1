@@ -1,8 +1,7 @@
 version: "3"
 services:
   nginx:
-    image: 3dsinteractive/mynginx:1.12
-    container_name: nginx
+    image: 3dsinteractive/mynginx:1.0
     ports:
       - 8080:8080
       - 8443:8443

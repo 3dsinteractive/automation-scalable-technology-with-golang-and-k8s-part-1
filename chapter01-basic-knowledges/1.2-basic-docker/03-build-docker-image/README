@@ -1,2 +1,24 @@
+Build docker image
 
+1. Open vscode at chapter01-basic-knowledges/1.2-basic-docker/03-build-docker-image
+
+2. Run command
 $ docker build -t 3dsinteractive/mynginx:1.0 .
+
+3. Run command
+$ docker-compose up -d
+Creating network "03-build-docker-image_default" with the default driver
+Creating 03-build-docker-image_nginx_1 ... done
+
+4. Run command
+$ curl -X GET localhost:8080/index.html
+<html>
+<header><title>Hello World</title></header>
+<body>
+    <h1>Hello world</h1>
+</body>
+</html>
+
+5. Explain Dockerfile
+
+

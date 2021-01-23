@@ -1,5 +1,6 @@
-1. Run command
-$ cd chapter01-basic-knowledges/1.2-basic-docker/1.2.02-run-nginx-with-docker
+Run Nginx with Docker
+
+1. Open vscode at chapter01-basic-knowledges/1.2-basic-docker/02-run-nginx-with-docker
 
 2. Run command
 $ docker-compose up -d
@@ -25,10 +26,10 @@ Creating nginx ... done
 3. Run command
 $ docker ps
 CONTAINER ID   IMAGE                       COMMAND                  CREATED          STATUS          PORTS                                         NAMES
-ebece58ff823   3dsinteractive/nginx:1.12   "/app-entrypoint.sh …"   26 seconds ago   Up 25 seconds   0.0.0.0:80->8080/tcp, 0.0.0.0:443->8443/tcp   nginx
+ebece58ff823   3dsinteractive/nginx:1.12   "/app-entrypoint.sh …"   26 seconds ago   Up 25 seconds   0.0.0.0:8080->8080/tcp, 0.0.0.0:8443->8443/tcp   nginx
 
 4. Run command to request http from nginx
-$ curl -X GET "http://localhost:80"
+$ curl -X GET "http://localhost:8080"
 <!DOCTYPE html>
 <html>
 <head>
