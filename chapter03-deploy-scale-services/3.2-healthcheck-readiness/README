@@ -1,3 +1,3 @@
-$ go mod init automationworkshop/main
-go: creating new go.mod: module automationworkshop/main
+Service Healthcheck
 
+1. Open vscode at chapter03-deploy-scale-services/3.2-healthcheck-readiness
