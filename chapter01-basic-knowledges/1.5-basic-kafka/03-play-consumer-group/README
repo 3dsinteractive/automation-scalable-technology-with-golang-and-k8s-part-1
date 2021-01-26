@@ -29,7 +29,7 @@ $ kubectl exec -it client-util -n basic-kafka -- bash
 root@client-util:/#
 
 Start Consumer 1 
-$ kafkacat -C -b "kfk1" -G mygroup mytopic
+$ kafkacat -C -b "kfk1,kfk2,kfk3" -G mygroup mytopic
 
 // Open another tab in terminal
 $ kubectl exec -it client-util -n basic-kafka -- bash
