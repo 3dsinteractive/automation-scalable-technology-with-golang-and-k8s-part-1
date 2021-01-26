@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: healthcheck
+  labels:
+    name: healthcheck
+    module: Namespace

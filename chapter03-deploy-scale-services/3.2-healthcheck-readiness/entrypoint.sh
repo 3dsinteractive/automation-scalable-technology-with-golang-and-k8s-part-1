@@ -5,4 +5,4 @@ FILE=/.env ; [ -f $FILE ] && . $FILE
 FILE=/config/.env ; [ -f $FILE ] && . $FILE
 
 # start main program
-exec /main -profiler=true
+exec /main
