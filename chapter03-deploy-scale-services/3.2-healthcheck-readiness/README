@@ -1,4 +1,6 @@
-Deploy Service
+Healthcheck Readiness
+
+0. Look into the slides about service healthcheck
 
 1. Open vscode at chapter03-deploy-deploy-services/3.2-healthcheck-readiness
 
@@ -26,8 +28,8 @@ This will build the Dockerfile and push image to [your-docker-repository-name]/a
 $ cd k8s
 
 9. Run command
-$ kubectl apply 00-namespace.yml
-$ kubectl apply 01-redis.yml
+$ kubectl apply -f 00-namespace.yml
+$ kubectl apply -f 01-redis.yml
 
 ** Wait until redis is OK
 

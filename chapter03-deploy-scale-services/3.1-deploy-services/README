@@ -1,5 +1,7 @@
 Deploy Service
 
+0. Look into the slides about Deploy Service
+
 1. Open vscode at chapter03-deploy-deploy-services/3.1-deploy-services
 
 2. Register for https://hub.docker.com

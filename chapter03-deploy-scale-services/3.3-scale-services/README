@@ -1,3 +1,84 @@
-Scale Services
+Scale Service
 
-1. Open vscode at chapter03-deploy-scale-services/3.3-scale-services
+0. Look into the slides about scale service
+
+1. Open vscode at chapter03-deploy-scale-services/3.2-healthcheck-readiness
+
+2. Register for https://hub.docker.com
+
+3. Create public repository call [your-docker-repository-name]/automation-technology
+
+4. Make sure docker is running (Check the docker icon in task bar)
+
+5. Make sure you are logged in with your docker account
+$ docker login
+[username]
+[password]
+
+6. Update file deploy.sh change 
+DOCKER_REPOSITORY=
+to
+DOCKER_REPOSITORY=[your-docker-repository-name]
+
+7. Run command (deploy.sh will be the file used to build your project, especially when it integrate with ci/cd)
+$ ./deploy.sh
+This will build the Dockerfile and push image to [your-docker-repository-name]/automation-technology
+
+8. Run command 
+$ cd k8s
+
+9. Run command to start databases
+$ kubectl apply -f 00-namespace.yml
+$ kubectl apply -f 01-redis.yml
+$ kubectl apply -f 02-zk.yml
+$ kubectl apply -f 03-kfk.yml
+
+10. Run command to check if every pods is OK
+$ kubectl get po -n scale-service
+** Wait until every services is OK
+
+11. Run command to start all services
+$ kubectl apply -f .
+
+12. Run command to make sure all services is OK
+$ kubectl get svc -n scale-service
+
+13. Run command
+$ kubectl get ing -n scale-service
+
+14. Notice register-api and mail-consumer is started in different pod (different deployment)
+$ kubectl get po -n scale-service
+NAME                             READY   STATUS    RESTARTS   AGE
+mail-consumer-6464cfb976-2s25c   0/1     Running   0          61s
+register-api-968dff55d-82csh     1/1     Running   0          61s
+register-api-968dff55d-hzhpd     1/1     Running   0          61s
+
+15. Look into sourcecode (main.go) to see that we read SERVICE_ID from env in deployment files
+    Also look how register-api send message to mail-consumer
+
+16. Run command
+$ curl -X POST "http://kubernetes.docker.internal/citizen"
+{"citizen_id":"5577006791947779410","status":"success"}
+
+17. Run command to see the logs of consumer
+Copy pod name then run 
+$ kubectl logs [pod-name] -n scale-service
+Consumer: main.go 68 Mail has sent to {"citizen_id":"5577006791947779410"}
+
+18. Also we read CACHE_SERVER and MQ_SERVERS from env too, to not hardcoding configuration in sourcecode
+
+19. Run command to scale consumers
+$ kubectl scale -f 06-mail-consumer.yml --replicas=1
+deployment.apps/mail-consumer scaled
+
+20. Run command to see consumer has scaled, while api has stay the same
+$ kubectl get po -n scale-service
+$ watch "kubectl get po -n scale-service"
+
+21. Run command to play with replicas down
+$ kubectl scale -f 06-mail-consumer.yml --replicas=1
+$ kubectl get po -n scale-service
+** See the mail-consumer scale down to 1
+
+22. Run command to cleanup
+$ kubectl delete ns scale-service

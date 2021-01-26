@@ -12,8 +12,11 @@ func main() {
 	ms := NewMicroservice()
 	ms.RegisterLivenessProbeEndpoint("/healthz")
 
+	// 1. Read SERVICE_ID via environment variable to run each service in separate deployments
 	serviceID := cfg.ServiceID()
 
+	// 2. Finally, these 2 services will run in separate deployments,
+	//    so we could control how many replicas each services will be
 	switch serviceID {
 	case "register-api":
 		startHTTP(ms, cfg)
