@@ -21,9 +21,11 @@ function build_api() {
 
     GO=/usr/local/go/bin/go
     if [ -f "$GO" ]; then
+        /usr/local/go/bin/go mod init automationworkshop/main
         /usr/local/go/bin/go get
         /usr/local/go/bin/go mod vendor
     else 
+        go mod init automationworkshop/main
         go get
         go mod vendor
     fi

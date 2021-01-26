@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# CMD is the function
 CMD=build_api
 APP_VERSION=1.0
 TIMESTAMP=20210117185518
@@ -21,9 +22,11 @@ function build_api() {
 
     GO=/usr/local/go/bin/go
     if [ -f "$GO" ]; then
+        /usr/local/go/bin/go mod init automationworkshop/main
         /usr/local/go/bin/go get
         /usr/local/go/bin/go mod vendor
     else 
+        go mod init automationworkshop/main
         go get
         go mod vendor
     fi
