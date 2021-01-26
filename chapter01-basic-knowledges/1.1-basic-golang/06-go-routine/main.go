@@ -10,8 +10,8 @@ func main() {
 
 	workerCount := 10
 
-	// 1. Use channel to receive data from go module
-	//    Send data from module back to outside
+	// 1. Use channel to receive data from go routine
+	//    Send data from go routine back to outside
 	responseChannel := make(chan string)
 	for i := 0; i < workerCount; i++ {
 		workerID := fmt.Sprintf("worker-%d", i)
