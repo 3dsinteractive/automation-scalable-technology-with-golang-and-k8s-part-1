@@ -56,16 +56,16 @@ register-api-968dff55d-hzhpd     1/1     Running   0          61s
 15. Look into sourcecode (main.go) to see that we read SERVICE_ID from env in deployment files
     Also look how register-api send message to mail-consumer
 
-16. Run command
+16. Also we read CACHE_SERVER and MQ_SERVERS from env too, to not hardcoding configuration in sourcecode
+
+17. Run command
 $ curl -X POST "http://kubernetes.docker.internal/citizen"
 {"citizen_id":"5577006791947779410","status":"success"}
 
-17. Run command to see the logs of consumer
+18. Run command to see the logs of consumer
 Copy pod name then run 
 $ kubectl logs [pod-name] -n scale-service
 Consumer: main.go 68 Mail has sent to {"citizen_id":"5577006791947779410"}
-
-18. Also we read CACHE_SERVER and MQ_SERVERS from env too, to not hardcoding configuration in sourcecode
 
 19. Run command to scale consumers
 $ kubectl scale -f 06-mail-consumer.yml --replicas=1

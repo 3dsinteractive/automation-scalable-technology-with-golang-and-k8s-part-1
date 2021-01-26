@@ -179,7 +179,7 @@ func startBatchPTaskWorker(ms *Microservice, cfg IConfig) {
 }
 
 func start3rdPartyMockAPI(ms *Microservice, cfg IConfig) {
-	ms.POST("/3rd-party/validation", func(ctx IContext) error {
+	ms.POST("/3rd-party/validate", func(ctx IContext) error {
 		time.Sleep(1 * time.Second)
 		status := map[string]interface{}{
 			"status": "ok",

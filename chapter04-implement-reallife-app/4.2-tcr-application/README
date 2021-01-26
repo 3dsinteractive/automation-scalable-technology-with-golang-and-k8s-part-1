@@ -49,29 +49,50 @@ $ kubectl get ing -n tcir-app
 14. Notice all services is started in different pod (different deployment)
 $ kubectl get po -n tcir-app
 NAME                                 READY   STATUS    RESTARTS   AGE
-batch-ptask-api-55df49f66f-fgfh5     1/1     Running   0          16m
-batch-ptask-api-55df49f66f-khkc2     1/1     Running   1          16m
-batch-ptask-worker-87c757d95-2bcgr   1/1     Running   0          2m10s
-batch-ptask-worker-87c757d95-v9p5h   1/1     Running   0          2m10s
-batch-ptask-worker-87c757d95-vhfwh   1/1     Running   0          2m10s
-batch-scheduler-c49fb8bbd-nsrdf      1/1     Running   0          2m10s
-client-util                          1/1     Running   1          16m
-external-api-57668cf778-7lzk9        1/1     Running   0          2m10s
-kfk1-86886b6b84-rm6s5                1/1     Running   4          19m
-kfk2-5b69dfcdb4-gm6kg                1/1     Running   4          19m
-kfk3-6d4c8874c6-4w42p                1/1     Running   4          19m
-mail-consumer-dbf5fbdd6-h8552        1/1     Running   0          2m10s
-mail-consumer-dbf5fbdd6-lkxk8        1/1     Running   0          2m10s
-mail-consumer-dbf5fbdd6-wpld4        1/1     Running   0          2m10s
-redis-577d58dd6c-jthr6               1/1     Running   1          19m
-register-api-79db7f8cd4-8xf8k        1/1     Running   0          2m10s
-register-api-79db7f8cd4-x6kbh        1/1     Running   0          2m10s
-zk1-76cc547698-g6cvp                 1/1     Running   1          19m
-zk2-7bb59d6788-pswh7                 1/1     Running   1          19m
-zk3-566db54d6b-j4w6m                 1/1     Running   1          19m
+batch-ptask-api-55df49f66f-gvnnz     1/1     Running   0          2m14s
+batch-ptask-api-55df49f66f-z8ggg     1/1     Running   0          2m14s
+batch-ptask-worker-87c757d95-879rt   1/1     Running   0          2m14s
+batch-ptask-worker-87c757d95-8whkr   1/1     Running   0          2m14s
+batch-ptask-worker-87c757d95-pdsmd   1/1     Running   0          2m14s
+batch-scheduler-c49fb8bbd-l7thf      1/1     Running   0          2m14s
+client-util                          1/1     Running   1          33m
+external-api-57668cf778-lmdgh        1/1     Running   0          2m14s
+kfk1-86886b6b84-rm6s5                1/1     Running   4          36m
+kfk2-5b69dfcdb4-gm6kg                1/1     Running   4          36m
+kfk3-6d4c8874c6-4w42p                1/1     Running   4          36m
+mail-consumer-dbf5fbdd6-9tf22        1/1     Running   0          2m14s
+mail-consumer-dbf5fbdd6-ds48q        1/1     Running   0          2m14s
+mail-consumer-dbf5fbdd6-gwdgs        1/1     Running   0          2m14s
+redis-577d58dd6c-jthr6               1/1     Running   1          36m
+register-api-79db7f8cd4-hnlzx        1/1     Running   0          2m14s
+register-api-79db7f8cd4-t7fmv        1/1     Running   0          2m14s
+zk1-76cc547698-g6cvp                 1/1     Running   1          36m
+zk2-7bb59d6788-pswh7                 1/1     Running   1          36m
+zk3-566db54d6b-j4w6m                 1/1     Running   1          36m
 
 15. Look into sourcecode (main.go) to see that we read SERVICE_ID from env in deployment files
     And also look at how we connect each services together using HTTP, Consumer, AsyncTask, Scheduler, ParallelTask
+
+16. Run command
+$ curl -X POST "http://kubernetes.docker.internal/api/citizen"
+{"ref":"atask-5577006791947779410"}
+
+17. Run command
+$ curl -X GET "http://kubernetes.docker.internal/api/citizen?ref=atask-5577006791947779410"
+{"code":200,"data":{"citizen_id":"5577006791947779410","status":"success"},"status":"success"}
+
+18. Run command to get pod name of [mail-consumer-xxxx]
+    And use pod name to get logs
+$ kubectl get po -n tcir-app | grep mail-consumer
+
+$ kubectl logs [pod1] -n tcir-app
+$ kubectl logs [pod2] -n tcir-app
+$ kubectl logs [pod3] -n tcir-app
+
+17. Run command to see the logs of consumer
+Copy pod name then run 
+$ kubectl logs [pod-name] -n scale-service
+Consumer: main.go 68 Mail has sent to {"citizen_id":"5577006791947779410"}
 
 16. Run command to cleanup
 $ kubectl delete ns tcir-app

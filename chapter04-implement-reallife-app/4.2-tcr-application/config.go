@@ -50,15 +50,15 @@ func (cfg *Config) CitizenConfirmedTopic() string {
 
 // CitizenValidationAPI return API to validate citizen information
 func (cfg *Config) CitizenValidationAPI() string {
-	return "http://kubernetes.docker.internal/3rd-party/validate"
+	return "http://external-api/3rd-party/validate"
 }
 
 // CitizenDeliveryAPI return API to request delivery citizen ID card
 func (cfg *Config) CitizenDeliveryAPI() string {
-	return "http://kubernetes.docker.internal/3rd-party/delivery"
+	return "http://external-api/3rd-party/delivery"
 }
 
 // BatchDeliverAPI return API to batch delivery citizen ID card
 func (cfg *Config) BatchDeliverAPI() string {
-	return "http://kubernetes.docker.internal/ptask/delivery"
+	return "http://batch-ptask-api/ptask/delivery"
 }
