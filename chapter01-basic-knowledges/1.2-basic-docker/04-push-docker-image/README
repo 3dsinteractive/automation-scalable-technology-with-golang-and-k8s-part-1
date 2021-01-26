@@ -6,5 +6,5 @@ Push docker image
 
 2. Create public repository call [your-docker-name]/mynginx:1.12
 
-3. Run command 
-$ docker push 3dsinteractive/mynginx:1.12
+3. Run command (Change [your-docker-name] to your registered docker name)
+$ docker push [your-docker-name]/mynginx:1.0
