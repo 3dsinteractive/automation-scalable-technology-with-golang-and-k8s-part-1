@@ -1,27 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: batch-ptask-api
-  namespace: tcr-app
+  name: batch-scheduler
+  namespace: tcir-app
   labels:
-    name: batch-ptask-api
+    name: batch-scheduler
 spec:
-  replicas: 2
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 1
-      maxSurge: 1
+  replicas: 1
   selector:
     matchLabels:
-      name: batch-ptask-api
+      name: batch-scheduler
   template:
     metadata:
       labels:
-        name: batch-ptask-api
+        name: batch-scheduler
     spec:
       containers:
-      - name: batch-ptask-api
+      - name: batch-scheduler
         image: 3dsinteractive/automation-technology:prd-1.0.20210118001006
         imagePullPolicy: Always
         readinessProbe:
@@ -42,7 +37,7 @@ spec:
           failureThreshold: 2
         env:
         - name: SERVICE_ID
-          value: batch-ptask-api
+          value: batch-scheduler
         - name: CACHE_SERVER
           value: redis:6379
         - name: MQ_SERVERS
@@ -57,19 +52,3 @@ spec:
           limits:
             memory: 1Gi
             cpu: 500m
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: batch-ptask-api
-  namespace: tcr-app
-  labels:
-    name: batch-ptask-api
-spec:
-  selector:
-    name: batch-ptask-api
-  ports:
-  - name: "api8080"
-    port: 8080
-    targetPort: 8080
-    protocol: TCP

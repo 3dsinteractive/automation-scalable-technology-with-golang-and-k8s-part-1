@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: tcr-app
+  name: tcir-app
   labels:
-    name: tcr-app
+    name: tcir-app
     module: Namespace

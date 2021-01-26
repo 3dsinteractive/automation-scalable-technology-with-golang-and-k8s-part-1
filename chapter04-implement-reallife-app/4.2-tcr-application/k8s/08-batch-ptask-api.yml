@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: register-api
-  namespace: tcr-app
+  name: batch-ptask-api
+  namespace: tcir-app
   labels:
-    name: register-api
+    name: batch-ptask-api
 spec:
   replicas: 2
   strategy:
@@ -14,14 +14,14 @@ spec:
       maxSurge: 1
   selector:
     matchLabels:
-      name: register-api
+      name: batch-ptask-api
   template:
     metadata:
       labels:
-        name: register-api
+        name: batch-ptask-api
     spec:
       containers:
-      - name: register-api
+      - name: batch-ptask-api
         image: 3dsinteractive/automation-technology:prd-1.0.20210118001006
         imagePullPolicy: Always
         readinessProbe:
@@ -42,7 +42,7 @@ spec:
           failureThreshold: 2
         env:
         - name: SERVICE_ID
-          value: register-api
+          value: batch-ptask-api
         - name: CACHE_SERVER
           value: redis:6379
         - name: MQ_SERVERS
@@ -61,13 +61,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: register-api
-  namespace: tcr-app
+  name: batch-ptask-api
+  namespace: tcir-app
   labels:
-    name: register-api
+    name: batch-ptask-api
 spec:
   selector:
-    name: register-api
+    name: batch-ptask-api
   ports:
   - name: "api8080"
     port: 8080

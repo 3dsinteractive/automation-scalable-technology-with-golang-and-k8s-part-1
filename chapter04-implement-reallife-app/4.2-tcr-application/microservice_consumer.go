@@ -35,6 +35,7 @@ func (ms *Microservice) consumeSingle(servers string, topic string, groupID stri
 				}
 			}
 			ms.Log("Consumer", err.Error())
+			ms.Stop()
 			return
 		}
 

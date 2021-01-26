@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: batch-scheduler
-  namespace: tcr-app
+  name: batch-ptask-worker
+  namespace: tcir-app
   labels:
-    name: batch-scheduler
+    name: batch-ptask-worker
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      name: batch-scheduler
+      name: batch-ptask-worker
   template:
     metadata:
       labels:
-        name: batch-scheduler
+        name: batch-ptask-worker
     spec:
       containers:
-      - name: batch-scheduler
+      - name: batch-ptask-worker
         image: 3dsinteractive/automation-technology:prd-1.0.20210118001006
         imagePullPolicy: Always
         readinessProbe:
@@ -37,7 +37,7 @@ spec:
           failureThreshold: 2
         env:
         - name: SERVICE_ID
-          value: batch-scheduler
+          value: batch-ptask-worker
         - name: CACHE_SERVER
           value: redis:6379
         - name: MQ_SERVERS

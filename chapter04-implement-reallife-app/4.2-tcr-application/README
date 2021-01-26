@@ -1,3 +1,77 @@
-Implement TCIR Application 
+Realife App TCIR (Thai Citizen ID Card Register)
+
+0. Look into the slides about TCIR
 
 1. Open vscode at chapter04-implement-reallife-app
+
+2. Register for https://hub.docker.com
+
+3. Create public repository call [your-docker-repository-name]/automation-technology
+
+4. Make sure docker is running (Check the docker icon in task bar)
+
+5. Make sure you are logged in with your docker account
+$ docker login
+[username]
+[password]
+
+6. Update file deploy.sh change 
+DOCKER_REPOSITORY=
+to
+DOCKER_REPOSITORY=[your-docker-repository-name]
+
+7. Run command (deploy.sh will be the file used to build your project, especially when it integrate with ci/cd)
+$ ./deploy.sh
+This will build the Dockerfile and push image to [your-docker-repository-name]/automation-technology
+
+8. Run command 
+$ cd k8s
+
+9. Run command to start databases
+kubectl apply -f 00-namespace.yml
+kubectl apply -f 01-redis.yml
+kubectl apply -f 02-zk.yml
+kubectl apply -f 03-kfk.yml
+
+10. Run command to check if every pods is OK
+$ kubectl get po -n tcir-app
+** Wait until every services is OK
+
+11. Run command to start all services
+$ kubectl apply -f .
+
+12. Run command to make sure all services is OK
+$ kubectl get svc -n tcir-app
+
+13. Run command
+$ kubectl get ing -n tcir-app
+
+14. Notice all services is started in different pod (different deployment)
+$ kubectl get po -n tcir-app
+NAME                                 READY   STATUS    RESTARTS   AGE
+batch-ptask-api-55df49f66f-fgfh5     1/1     Running   0          16m
+batch-ptask-api-55df49f66f-khkc2     1/1     Running   1          16m
+batch-ptask-worker-87c757d95-2bcgr   1/1     Running   0          2m10s
+batch-ptask-worker-87c757d95-v9p5h   1/1     Running   0          2m10s
+batch-ptask-worker-87c757d95-vhfwh   1/1     Running   0          2m10s
+batch-scheduler-c49fb8bbd-nsrdf      1/1     Running   0          2m10s
+client-util                          1/1     Running   1          16m
+external-api-57668cf778-7lzk9        1/1     Running   0          2m10s
+kfk1-86886b6b84-rm6s5                1/1     Running   4          19m
+kfk2-5b69dfcdb4-gm6kg                1/1     Running   4          19m
+kfk3-6d4c8874c6-4w42p                1/1     Running   4          19m
+mail-consumer-dbf5fbdd6-h8552        1/1     Running   0          2m10s
+mail-consumer-dbf5fbdd6-lkxk8        1/1     Running   0          2m10s
+mail-consumer-dbf5fbdd6-wpld4        1/1     Running   0          2m10s
+redis-577d58dd6c-jthr6               1/1     Running   1          19m
+register-api-79db7f8cd4-8xf8k        1/1     Running   0          2m10s
+register-api-79db7f8cd4-x6kbh        1/1     Running   0          2m10s
+zk1-76cc547698-g6cvp                 1/1     Running   1          19m
+zk2-7bb59d6788-pswh7                 1/1     Running   1          19m
+zk3-566db54d6b-j4w6m                 1/1     Running   1          19m
+
+15. Look into sourcecode (main.go) to see that we read SERVICE_ID from env in deployment files
+    And also look at how we connect each services together using HTTP, Consumer, AsyncTask, Scheduler, ParallelTask
+
+16. Run command to cleanup
+$ kubectl delete ns tcir-app

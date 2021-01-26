@@ -26,7 +26,7 @@ func main() {
 		startBatchPTaskAPI(ms, cfg)
 	case "batch-ptask-worker":
 		startBatchPTaskWorker(ms, cfg)
-	case "3rd-party-api":
+	case "external-api":
 		start3rdPartyMockAPI(ms, cfg)
 	}
 
@@ -85,7 +85,8 @@ func startMailConsumer(ms *Microservice, cfg IConfig) {
 
 		// 4. Call validation API (Response AVG at 1 second, so we set timeout at 5 seconds)
 		req := ctx.Requester("", 5*time.Second)
-		validationResStr, err := req.Post(cfg.CitizenValidationAPI(), map[string]string{"citizen_id": citizen.CitizenID})
+		validationResStr, err := req.Post(cfg.CitizenValidationAPI(),
+			map[string]string{"citizen_id": citizen.CitizenID})
 		if err != nil {
 			ctx.Log(err.Error())
 			return err
@@ -131,8 +132,10 @@ func startBatchScheduler(ms *Microservice, cfg IConfig) {
 		}
 
 		// 2. Will start PTask to execute all workers
-		rqt := ctx.Requester("", 30*time.Second) // This run only 1 time a day, to make sure it will run, use 30 secs timeout
-		res, err := rqt.Post(cfg.BatchDeliverAPI(), map[string]string{"task_id": "batch_deliver", "worker_count": "5"})
+		//    This run only 1 time a day, to make sure it will run, use 30 secs timeout
+		rqt := ctx.Requester("", 30*time.Second)
+		res, err := rqt.Post(cfg.BatchDeliverAPI(),
+			map[string]string{"task_id": "batch_deliver", "worker_count": "5"})
 		if err != nil {
 			ctx.Log(err.Error())
 			return err
@@ -148,28 +151,31 @@ func startBatchPTaskAPI(ms *Microservice, cfg IConfig) {
 }
 
 func startBatchPTaskWorker(ms *Microservice, cfg IConfig) {
-	ms.PTaskWorker("/ptask/delivery", cfg.CacheServer(), cfg.MQServers(), func(ctx IContext) error {
+	ms.PTaskWorker("/ptask/delivery",
+		cfg.CacheServer(),
+		cfg.MQServers(),
+		func(ctx IContext) error {
 
-		newMS := NewMicroservice()
-		newMS.ConsumeBatch(
-			cfg.MQServers(),
-			cfg.CitizenConfirmedTopic(),
-			"deliver-consumer",
-			5*time.Minute, // Read Timeout
-			5,             // Batch Size
-			5*time.Second, // Batch Timeout
-			func(newCtx IContext) error {
-				inputs := newCtx.ReadInputs()
-				for _, input := range inputs {
-					newCtx.Log("Deliver to " + input)
-				}
+			newMS := NewMicroservice()
+			newMS.ConsumeBatch(
+				cfg.MQServers(),
+				cfg.CitizenConfirmedTopic(),
+				"deliver-consumer",
+				5*time.Minute, // Read Timeout
+				5,             // Batch Size
+				5*time.Second, // Batch Timeout
+				func(newCtx IContext) error {
+					inputs := newCtx.ReadInputs()
+					for _, input := range inputs {
+						newCtx.Log("Deliver to " + input)
+					}
 
-				newMS.Stop()
-				return nil
-			})
-		newMS.Start()
-		return nil
-	})
+					newMS.Stop()
+					return nil
+				})
+			newMS.Start()
+			return nil
+		})
 }
 
 func start3rdPartyMockAPI(ms *Microservice, cfg IConfig) {

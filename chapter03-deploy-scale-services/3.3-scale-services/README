@@ -2,7 +2,7 @@ Scale Service
 
 0. Look into the slides about scale service
 
-1. Open vscode at chapter03-deploy-scale-services/3.2-healthcheck-readiness
+1. Open vscode at chapter03-deploy-scale-services/3.3-scale-services
 
 2. Register for https://hub.docker.com
 

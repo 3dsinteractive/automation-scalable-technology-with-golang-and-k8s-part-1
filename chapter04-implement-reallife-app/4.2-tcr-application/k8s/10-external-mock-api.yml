@@ -1,22 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mail-consumer
-  namespace: tcr-app
+  name: external-api
+  namespace: tcir-app
   labels:
-    name: mail-consumer
+    name: external-api
 spec:
-  replicas: 3
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   selector:
     matchLabels:
-      name: mail-consumer
+      name: external-api
   template:
     metadata:
       labels:
-        name: mail-consumer
+        name: external-api
     spec:
       containers:
-      - name: mail-consumer
+      - name: external-api
         image: 3dsinteractive/automation-technology:prd-1.0.20210118001006
         imagePullPolicy: Always
         readinessProbe:
@@ -37,7 +42,7 @@ spec:
           failureThreshold: 2
         env:
         - name: SERVICE_ID
-          value: mail-consumer
+          value: external-api
         - name: CACHE_SERVER
           value: redis:6379
         - name: MQ_SERVERS
@@ -52,3 +57,19 @@ spec:
           limits:
             memory: 1Gi
             cpu: 500m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: external-api
+  namespace: tcir-app
+  labels:
+    name: external-api
+spec:
+  selector:
+    name: external-api
+  ports:
+  - name: "api8080"
+    port: 8080
+    targetPort: 8080
+    protocol: TCP

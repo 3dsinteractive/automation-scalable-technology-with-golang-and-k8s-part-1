@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kfk1
-  namespace: tcr-app
+  namespace: tcir-app
   labels:
     name: kfk1
 spec:
@@ -82,7 +82,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kfk2
-  namespace: tcr-app
+  namespace: tcir-app
   labels:
     name: kfk2
 spec:
@@ -162,7 +162,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kfk3
-  namespace: tcr-app
+  namespace: tcir-app
   labels:
     name: kfk3
 spec:
@@ -242,7 +242,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kfk1
-  namespace: tcr-app
+  namespace: tcir-app
   labels:
     name: kfk1
 spec:
@@ -258,7 +258,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kfk2
-  namespace: tcr-app
+  namespace: tcir-app
   labels:
     name: kfk2
 spec:
@@ -274,7 +274,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kfk3
-  namespace: tcr-app
+  namespace: tcir-app
   labels:
     name: kfk3
 spec:
