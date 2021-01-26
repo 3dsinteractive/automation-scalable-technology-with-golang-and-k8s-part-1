@@ -5,7 +5,7 @@
 APP_VERSION=1.0
 TIMESTAMP=20210118001006
 DEPLOY_ENV=prd
-DOCKER_REPOSITORY=
+DOCKER_REPOSITORY=3dsinteractive
 
 # 2. commit will push docker image to repository
 function commit() {

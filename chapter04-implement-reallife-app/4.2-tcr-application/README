@@ -89,10 +89,21 @@ $ kubectl logs [pod1] -n tcir-app
 $ kubectl logs [pod2] -n tcir-app
 $ kubectl logs [pod3] -n tcir-app
 
-17. Run command to see the logs of consumer
-Copy pod name then run 
-$ kubectl logs [pod-name] -n scale-service
-Consumer: main.go 68 Mail has sent to {"citizen_id":"5577006791947779410"}
+Consumer: main.go 112 Mail confirmation has sent to 5577006791947779410
 
-16. Run command to cleanup
+19. Run command
+$ kubectl exec -it client-util -n tcir-app -- bash
+$ kafkacat -b "kfk1,kfk2,kfk3" -L | grep "confirm"
+
+topic "when-citizen-has-confirmed" with 50 partitions:
+
+20. kafkacat -b "kfk1,kfk2,kfk3" -C -e -t when-citizen-has-confirmed
+Find {"citizen_id":"5577006791947779410"} in one of 50 partitions
+
+$ exit
+
+21. The scheduler will run at midnight and batch create & delivery 
+    id card to all of citizen in topic when-citizen-has-confirmed
+
+22. Run command to cleanup
 $ kubectl delete ns tcir-app

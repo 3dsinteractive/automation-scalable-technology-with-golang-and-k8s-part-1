@@ -50,15 +50,15 @@ func (cfg *Config) CitizenConfirmedTopic() string {
 
 // CitizenValidationAPI return API to validate citizen information
 func (cfg *Config) CitizenValidationAPI() string {
-	return "http://external-api/3rd-party/validate"
+	return "http://external-api:8080/3rd-party/validate"
 }
 
 // CitizenDeliveryAPI return API to request delivery citizen ID card
 func (cfg *Config) CitizenDeliveryAPI() string {
-	return "http://external-api/3rd-party/delivery"
+	return "http://external-api:8080/3rd-party/delivery"
 }
 
 // BatchDeliverAPI return API to batch delivery citizen ID card
 func (cfg *Config) BatchDeliverAPI() string {
-	return "http://batch-ptask-api/ptask/delivery"
+	return "http://batch-ptask-api:8080/ptask/delivery"
 }
