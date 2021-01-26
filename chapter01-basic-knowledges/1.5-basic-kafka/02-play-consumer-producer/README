@@ -18,7 +18,7 @@ $ kubectl exec -it client-util -n basic-kafka -- bash
 root@client-util:/#
 
 Start Producer
-$ kafkacat -P -b "kfk1" -t "mytopic"
+$ kafkacat -P -b "kfk1,kfk2,kfk3" -t "mytopic"
 
 $ message1
 $ message2
@@ -30,5 +30,5 @@ $ kubectl exec -it client-util -n basic-kafka -- bash
 root@client-util:/#
 
 Start Consumer
-$ kafkacat -C -b "kfk1" -t mytopic
+$ kafkacat -C -b "kfk1,kfk2,kfk3" -t "mytopic"
 
