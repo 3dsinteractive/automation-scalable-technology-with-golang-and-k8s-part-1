@@ -6,4 +6,4 @@ Install Golang
 
 3. After install open terminal and run command
 $ go version
-go version go1.14.4 darwin/amd64
+go version go1.15.7 darwin/amd64
