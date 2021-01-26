@@ -1,3 +1,69 @@
 Deploy Service
 
-1. Open vscode at chapter03-deploy-scale-services/3.1-deploy-services
+1. Open vscode at chapter03-deploy-deploy-services/3.1-deploy-services
+
+2. Register for https://hub.docker.com
+
+3. Create public repository call [your-docker-repository-name]/automation-technology
+
+2. Make sure docker is running (Check the docker icon in task bar)
+
+3. Make sure you are logged in with your docker account
+$ docker login
+[username]
+[password]
+
+4. Update file deploy.sh change 
+DOCKER_REPOSITORY=
+to
+DOCKER_REPOSITORY=[your-docker-repository-name]
+
+4. Run command (deploy.sh will be the file used to build your project, especially when it integrate with ci/cd)
+$ ./deploy.sh
+This will build the Dockerfile and push image to [your-docker-repository-name]/automation-technology
+
+5. Explain deploy.sh (Each comments will explain itself)
+
+6. Explain Dockerfile
+
+7. Explain entrypoint.sh
+
+8. Run command 
+$ cd k8s
+
+9. Run command
+$ kubectl apply -f .
+
+10. Run command
+$ kubectl get po -n deploy-service
+register-api-758f494ccd-7xqmx   1/1     Running   0          109s
+register-api-758f494ccd-gbtdg   1/1     Running   0          109s
+
+11. Run command
+$ kubectl get svc -n deploy-service
+NAME           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+register-api   ClusterIP   10.103.76.235   <none>        8080/TCP   2m38s
+
+12. Run command
+$ kubectl get ing -n deploy-service
+NAME      CLASS    HOSTS                        ADDRESS     PORTS   AGE
+ingress   <none>   kubernetes.docker.internal   localhost   80      91s
+
+13. Run command
+$ curl -X POST "http://kubernetes.docker.internal/citizen"
+{"status":"success"}
+
+14. Run command
+$ curl -X PUT "http://kubernetes.docker.internal/citizen/123"
+{"id":"123"}
+
+15. Run command
+$ curl -X GET "http://kubernetes.docker.internal/citizen/123?page=2"
+{"id":"123","page":"2"}
+
+16. Run command
+$ curl -X DELETE "http://kubernetes.docker.internal/citizen/123"
+{"status":"success"}
+
+17. Run command
+$ kubectl delete ns deploy-service

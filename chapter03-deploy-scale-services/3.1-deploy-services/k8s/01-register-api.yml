@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: register-api
+  namespace: deploy-service
+  labels:
+    name: register-api
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      name: register-api
+  template:
+    metadata:
+      labels:
+        name: register-api
+    spec:
+      containers:
+      - name: register-api
+        image: 3dsinteractive/automation-technology:prd-1.0.20210117185518
+        imagePullPolicy: Always
+        ports:
+        - name: api8080
+          containerPort: 8080
+        resources:
+          requests:
+            memory: 500Mi
+            cpu: 200m
+          limits:
+            memory: 1Gi
+            cpu: 500m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: register-api
+  namespace: deploy-service
+  labels:
+    name: register-api
+spec:
+  selector:
+    name: register-api
+  ports:
+  - name: "api8080"
+    port: 8080
+    targetPort: 8080
+    protocol: TCP
