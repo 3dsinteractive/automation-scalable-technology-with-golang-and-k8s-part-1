@@ -2,7 +2,7 @@ Healthcheck Readiness
 
 0. Look into the slides about service healthcheck
 
-1. Open vscode at chapter03-deploy-deploy-services/3.2-healthcheck-readiness
+1. Open vscode at chapter03-deploy-healthchecks/3.2-healthcheck-readiness
 
 2. Register for https://hub.docker.com
 
@@ -34,7 +34,7 @@ $ kubectl apply -f 01-redis.yml
 ** Wait until redis is OK
 
 10. Run command
-$ kubectl get po -n deploy-service
+$ kubectl get po -n healthcheck
 NAME                     READY   STATUS    RESTARTS   AGE
 redis-577d58dd6c-c6595   1/1     Running   0          3m55s
 
@@ -42,17 +42,17 @@ redis-577d58dd6c-c6595   1/1     Running   0          3m55s
 $ kubectl apply -f .
 
 12. Run command to make sure all services is OK
-$ kubectl get po -n deploy-service
+$ kubectl get po -n healthcheck
 register-api-758f494ccd-7xqmx   1/1     Running   0          109s
 register-api-758f494ccd-gbtdg   1/1     Running   0          109s
 
 13. Run command
-$ kubectl get svc -n deploy-service
+$ kubectl get svc -n healthcheck
 NAME           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
 register-api   ClusterIP   10.103.76.235   <none>        8080/TCP   2m38s
 
 14. Run command
-$ kubectl get ing -n deploy-service
+$ kubectl get ing -n healthcheck
 NAME      CLASS    HOSTS                        ADDRESS     PORTS   AGE
 ingress   <none>   kubernetes.docker.internal   localhost   80      91s
 
