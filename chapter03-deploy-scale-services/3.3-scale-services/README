@@ -64,11 +64,11 @@ $ curl -X POST "http://kubernetes.docker.internal/citizen"
 
 18. Run command to see the logs of consumer
 Copy pod name then run 
-$ kubectl logs [pod-name] -n scale-service
+$ kubectl logs mail-consumer-6464cfb976-gmwmk -n scale-service
 Consumer: main.go 68 Mail has sent to {"citizen_id":"5577006791947779410"}
 
 19. Run command to scale consumers
-$ kubectl scale -f 06-mail-consumer.yml --replicas=1
+$ kubectl scale -f 06-mail-consumer.yml --replicas=10
 deployment.apps/mail-consumer scaled
 
 20. Run command to see consumer has scaled, while api has stay the same
