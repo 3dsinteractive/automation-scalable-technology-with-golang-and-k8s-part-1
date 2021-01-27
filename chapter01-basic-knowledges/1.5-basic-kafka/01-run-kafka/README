@@ -1,10 +1,13 @@
-lesson 1.5.1 Run Kafka
+Run Kafka
 
+1. Enter workshop directory
 $ cd chapter01-basic-knowledges/1.5-basic-kafka/01-run-kafka
 
+2. Create namespace
 $ kubectl apply -f 00-namespace.yml 
 namespace/basic-kafka created
 
+3. Check namespace exists
 $ kubectl get ns
 NAME              STATUS   AGE
 basic-kafka       Active   21s
@@ -14,11 +17,13 @@ kube-node-lease   Active   23h
 kube-public       Active   23h
 kube-system       Active   23h
 
+4. Create zookeeper deployment
 $ kubectl apply -f 01-deployment-zk.yml 
 deployment.apps/zk1 created
 deployment.apps/zk2 created
 deployment.apps/zk3 created
 
+5. Check zookeeper deployment
 $ kubectl get po -n basic-kafka
 NAME                   READY   STATUS              RESTARTS   AGE
 zk1-76cc547698-jhngx   0/1     ContainerCreating   0          21s
@@ -30,22 +35,26 @@ zk1-76cc547698-jhngx   1/1     Running   0          57s
 zk2-7bb59d6788-rc8s5   1/1     Running   0          57s
 zk3-566db54d6b-g579s   1/1     Running   0          57s
 
+6. Create zookeeper service
 $ kubectl apply -f 02-service-zk.yml
 service/zk1 created
 service/zk2 created
 service/zk3 created
 
+7. Check zookeeper service
 $ kubectl get svc -n basic-kafka
 NAME   TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)                      AGE
 zk1    ClusterIP   None         <none>        2181/TCP,2888/TCP,3888/TCP   26s
 zk2    ClusterIP   None         <none>        2181/TCP,2888/TCP,3888/TCP   26s
 zk3    ClusterIP   None         <none>        2181/TCP,2888/TCP,3888/TCP   26s
 
+8. Create kafka deployment
 $ kubectl apply -f 03-deployment-kfk.yml
 deployment.apps/kfk1 created
 deployment.apps/kfk2 created
 deployment.apps/kfk3 created
 
+9. Check kafka deployment
 $ kubectl get po -n basic-kafka
 NAME                    READY   STATUS              RESTARTS   AGE
 kfk1-86886b6b84-xkfh2   0/1     ContainerCreating   0          14s
@@ -64,11 +73,13 @@ zk1-76cc547698-jhngx    1/1     Running   0          13m
 zk2-7bb59d6788-rc8s5    1/1     Running   0          13m
 zk3-566db54d6b-g579s    1/1     Running   0          13m
 
+10. Create kafka service
 $ kubectl apply -f 04-service-kfk.yml
 service/kfk1 created
 service/kfk2 created
 service/kfk3 created
 
+11. Check kafka service
 $ kubectl get svc -n basic-kafka
 NAME   TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)                      AGE
 kfk1   ClusterIP   None         <none>        9092/TCP                     28s
@@ -78,11 +89,14 @@ zk1    ClusterIP   None         <none>        2181/TCP,2888/TCP,3888/TCP   14m
 zk2    ClusterIP   None         <none>        2181/TCP,2888/TCP,3888/TCP   14m
 zk3    ClusterIP   None         <none>        2181/TCP,2888/TCP,3888/TCP   14m
 
+12. Create client-util pod
 $ kubectl apply -f 05-client-util.yml
 pod/client-util created
 
+13. Exec into client-util pod
 $ kubectl exec -it client-util -n basic-kafka -- bash
 
+14. Run kafkacat -L to list brokers and topics
 # kafkacat -b kfk1 -L
 Metadata for all topics (from broker -1: kfk1:9092/bootstrap):
  3 brokers:
@@ -91,8 +105,9 @@ Metadata for all topics (from broker -1: kfk1:9092/bootstrap):
   broker 1 at kfk1:9092
  0 topics:
 
+15. Exit client-util
 # exit
 
-$ cd ../../../
+16. Do not cleanup workshop, we will use it in next workshop
 
 

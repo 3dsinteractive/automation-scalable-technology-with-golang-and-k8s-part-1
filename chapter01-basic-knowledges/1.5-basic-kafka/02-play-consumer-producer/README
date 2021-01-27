@@ -2,8 +2,10 @@
 Kafkacat URL
 https://github.com/edenhill/kafkacat
 
+1. Start all k8s object if not created
 $ kubectl apply -f .
 
+2. Check if kafka and zookeeper pods is running
 $ kubectl get po -n basic-kafka
 NAME                    READY   STATUS    RESTARTS   AGE
 client-util             1/1     Running   0          5m28s
@@ -14,21 +16,26 @@ zk1-76cc547698-8865g    1/1     Running   0          5m29s
 zk2-7bb59d6788-5dfxx    1/1     Running   0          5m29s
 zk3-566db54d6b-xqjzh    1/1     Running   0          5m29s
 
+3. Exec into client-util pod
 $ kubectl exec -it client-util -n basic-kafka -- bash
 root@client-util:/#
 
-Start Producer
+4. Start Producer using kafkacat, and send some messages
 $ kafkacat -P -b "kfk1,kfk2,kfk3" -t "mytopic"
 
 $ message1
 $ message2
 $ message3
 
-// Open another tab in terminal
-
+5. Open another tab in terminal, and exec into client-util
 $ kubectl exec -it client-util -n basic-kafka -- bash
 root@client-util:/#
 
-Start Consumer
+6. Start Consumer in the open terminal
 $ kafkacat -C -b "kfk1,kfk2,kfk3" -t "mytopic"
+
+7. Exit Consumer by (Ctrl + c)
+
+8. Exit client-util 
+$ exit
 
