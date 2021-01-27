@@ -1,48 +1,61 @@
+Use Redis cli
+===
 
-
+1. Exec into client-util pod
 $ kubectl exec -it client-util -n basic-redis -- bash
 
+2. Start redis-cli
 $ redis-cli -h redis
 redis:6379>
 
+3. Use SET command to set mykey = myvalue
 $ SET "mykey" "myvalue"
 OK
 
+4. Use GET to get value from key
 $ GET "mykey"
 "myvalue"
 
+5. Use EXPIRE command to expire mykey in 10 seconds
 $ EXPIRE "mykey" 10
 (integer) 1
 
 ** Wait 10 seconds
 
+6. Test get mykey when it is expired
 $ GET "mykey"
 (nil)
 
+7. SET mykey2
 $ SET "mykey2" "myvalue2"
 OK
 
+8. GET mykey2
 $ GET "mykey2"
 "myvalue2"
 
+9. Use DEL command to delete mykey2
 $ DEL "mykey2"
 (integer) 1
 
+10. GET mykey2 to see how it is deleted
 $ GET "mykey2"
 (nil)
 
+11. SET mykey1 and mykey2
 $ SET "mykey1" "value1"
 $ SET "mykey2" "value2"
 
+12. Use KEYS to list all keys using wildcard
 $ KEYS "mykey*"
 1) "mykey2"
 2) "mykey1"
 
-// Exit from redis 
+13. Exit from redis
 $ exit
 
-// Exit from client-util
+14. Exit from client-util
 $ exit
 
-// CLEAN UP WORKSHOP
+15. Cleanup workshop
 $ kubectl delete ns basic-redis
