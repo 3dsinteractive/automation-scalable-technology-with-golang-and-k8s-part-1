@@ -4,3 +4,5 @@ dockers
 main
 vendor
 .DS_Store
+access.log
+error.log

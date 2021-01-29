@@ -67,6 +67,3 @@ Removing network 1202-run-nginx-with-docker_default
 6. Run command to check nginx is stop and remove
 $ docker ps
 CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
-
-7. Run command
-$ cd ../../../
