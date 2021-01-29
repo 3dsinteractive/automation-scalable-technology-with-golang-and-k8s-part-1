@@ -16,6 +16,7 @@ go: creating new go.mod: module automationworkshop/main
 5. Run command
 $ go run main.go
 My First Program
+This is from MyPrintln
 
 6. Program are described by the comment in sourcecode
 
