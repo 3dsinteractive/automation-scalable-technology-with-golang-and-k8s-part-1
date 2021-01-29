@@ -17,10 +17,12 @@ func main() {
 		workerID := fmt.Sprintf("worker-%d", i)
 		go worker1(workerID, responseChannel)
 	}
+
 	for i := 0; i < workerCount; i++ {
 		res := <-responseChannel
 		println(res)
 	}
+
 	close(responseChannel)
 	println("All response returned")
 

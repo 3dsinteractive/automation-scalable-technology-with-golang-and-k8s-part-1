@@ -11,10 +11,54 @@ type ICitizenService interface {
 	CreateCitizenCard(c *Citizen) error
 }
 
+// ThaiCitizenService is the service to work with citizen data
+type ThaiCitizenService struct {
+}
+
+// NewThaiCititzenService is constructor function for CitizenService
+func NewThaiCititzenService() *ThaiCitizenService {
+	return &ThaiCitizenService{}
+}
+
+// Validate validate citizen information
+func (svc *ThaiCitizenService) Validate(c *Citizen) bool {
+	return len(c.Firstname) > 0 && len(c.Lastname) > 0 && len(c.CitizenID) > 0
+}
+
+// CreateCitizenCard will request API to create citizen card if citizen information is valid
+func (svc *ThaiCitizenService) CreateCitizenCard(c *Citizen) error {
+	// TODO: Request API to create citizen card
+	println(fmt.Sprintf("Successfully create Thai citizen card for ID=%s", c.CitizenID))
+	return nil
+}
+
+// JapanCitizenService is the service to work with citizen data
+type JapanCitizenService struct {
+}
+
+// NewJapanCititzenService is constructor function for CitizenService
+func NewJapanCititzenService() *JapanCitizenService {
+	return &JapanCitizenService{}
+}
+
+// Validate validate citizen information
+func (svc *JapanCitizenService) Validate(c *Citizen) bool {
+	return len(c.Firstname) > 0 && len(c.Lastname) > 0 && len(c.CitizenID) > 0
+}
+
+// CreateCitizenCard will request API to create citizen card if citizen information is valid
+func (svc *JapanCitizenService) CreateCitizenCard(c *Citizen) error {
+	// TODO: Request API to create citizen card
+	println(fmt.Sprintf("Successfully create Japan citizen card for ID=%s", c.CitizenID))
+	return nil
+}
+
 func main() {
+
 	// 1. Constructor function will return struct pointer
 	citizen := NewCitizen("Chaiyapong", "Lapliengtrakul", "1122334455")
-	citizenSvc := NewCititzenService()
+	citizenSvc := NewThaiCititzenService()
+	// citizenSvc := NewJapanCititzenService()
 
 	// 2. Function that accept interface, the argument must implement function declare in interface
 	//    In this case CitizenService struct must implement ICitizenService
@@ -56,27 +100,6 @@ func NewCitizen(firstname string, lastname string, citizenID string) *Citizen {
 		Lastname:  lastname,
 		CitizenID: citizenID,
 	}
-}
-
-// CitizenService is the service to work with citizen data
-type CitizenService struct {
-}
-
-// NewCititzenService is constructor function for CitizenService
-func NewCititzenService() *CitizenService {
-	return &CitizenService{}
-}
-
-// Validate validate citizen information
-func (svc *CitizenService) Validate(c *Citizen) bool {
-	return len(c.Firstname) > 0 && len(c.Lastname) > 0 && len(c.CitizenID) > 0
-}
-
-// CreateCitizenCard will request API to create citizen card if citizen information is valid
-func (svc *CitizenService) CreateCitizenCard(c *Citizen) error {
-	// TODO: Request API to create citizen card
-	println(fmt.Sprintf("Successfully create citizen card for ID=%s", c.CitizenID))
-	return nil
 }
 
 // AnotherService is another service
