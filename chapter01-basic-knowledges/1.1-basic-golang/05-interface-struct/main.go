@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 )
 
@@ -15,8 +14,8 @@ type ICitizenService interface {
 type ThaiCitizenService struct {
 }
 
-// NewThaiCititzenService is constructor function for CitizenService
-func NewThaiCititzenService() *ThaiCitizenService {
+// NewThaiCitizenService is constructor function for ThaiCitizenService
+func NewThaiCitizenService() *ThaiCitizenService {
 	return &ThaiCitizenService{}
 }
 
@@ -36,8 +35,8 @@ func (svc *ThaiCitizenService) CreateCitizenCard(c *Citizen) error {
 type JapanCitizenService struct {
 }
 
-// NewJapanCititzenService is constructor function for CitizenService
-func NewJapanCititzenService() *JapanCitizenService {
+// NewJapanCitizenService is constructor function for JapanCitizenService
+func NewJapanCitizenService() *JapanCitizenService {
 	return &JapanCitizenService{}
 }
 
@@ -57,8 +56,8 @@ func main() {
 
 	// 1. Constructor function will return struct pointer
 	citizen := NewCitizen("Chaiyapong", "Lapliengtrakul", "1122334455")
-	citizenSvc := NewThaiCititzenService()
-	// citizenSvc := NewJapanCititzenService()
+	citizenSvc := NewThaiCitizenService()
+	// citizenSvc := NewJapanCitizenService()
 
 	// 2. Function that accept interface, the argument must implement function declare in interface
 	//    In this case CitizenService struct must implement ICitizenService
@@ -116,63 +115,4 @@ func printError(err error) {
 
 func printUnderline() {
 	fmt.Println("---")
-}
-
-func printString(input string) {
-	fmt.Println("string = ", input)
-}
-
-func printInt(input int) {
-	fmt.Println("int = ", input)
-}
-
-func printBool(input bool) {
-	fmt.Println("bool = ", input)
-}
-
-func printInterface(input interface{}) {
-	fmt.Println("interface = ", input)
-}
-
-func printMap(input map[string]interface{}) {
-	fmt.Println("map = ", input)
-}
-
-func printMapAsJSON(input map[string]interface{}) {
-	js, _ := json.Marshal(input)
-	fmt.Println("map JSON = ", string(js))
-}
-
-func printSlice(input []string) {
-	fmt.Println("slice = ", input)
-}
-
-func printSliceAsJSON(input []string) {
-	js, _ := json.Marshal(input)
-	fmt.Println("slice JSON = ", string(js))
-}
-
-func printCitizen(input *Citizen) {
-	fmt.Println("Citizen = ", input)
-}
-
-func printCitizenAsJSON(input *Citizen) {
-	js, _ := json.Marshal(input)
-	fmt.Println("Citizen JSON = ", string(js))
-}
-
-// GenderType is enum for Gender
-type GenderType string
-
-const (
-	// Unspecify is gender type for Unspecify
-	Unspecify GenderType = "UNSPECIFY"
-	// Male is gender type for Male
-	Male GenderType = "MALE"
-	// Female is gender type for Female
-	Female GenderType = "FEMALE"
-)
-
-func printGender(input GenderType) {
-	fmt.Println("Gender = ", input)
 }
