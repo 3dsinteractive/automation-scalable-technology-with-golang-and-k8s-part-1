@@ -8,7 +8,7 @@ metadata:
 spec:
   containers:
     - name: client-util
-      image: 3dsinteractive/util:2.0
+      image: opcellent/util:2.0
       stdin: true
       tty: true
       imagePullPolicy: Always
