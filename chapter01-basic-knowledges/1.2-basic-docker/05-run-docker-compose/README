@@ -7,7 +7,7 @@ $ docker-compose up -d
 $ docker ps
 
 3. Run command
-$ curl -X GET "localhost:8080"
+$ curl -X GET "localhost:8080/index.html"
 
 4. Explain section in docker-compose.yml
 
