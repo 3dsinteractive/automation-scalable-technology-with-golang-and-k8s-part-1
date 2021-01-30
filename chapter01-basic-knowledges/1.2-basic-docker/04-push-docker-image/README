@@ -4,7 +4,11 @@ Push docker image
 
 1. Register for https://hub.docker.com
 
-2. Create public repository call [your-docker-name]/mynginx:1.0
+2. Create public repository call [your-repository-name]/mynginx:1.0
 
-3. Run command (Change [your-docker-name] to your registered docker name)
-$ docker push opcellent/mynginx:1.0
+3. docker login
+[username] : [your-repository-name]
+[password] : xxxxxxxxx
+
+4. Run command (Change [your-repository-name] to your registered docker name)
+$ docker push [your-repository-name]/mynginx:1.0
