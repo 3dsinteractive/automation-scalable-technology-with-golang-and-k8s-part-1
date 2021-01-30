@@ -23,7 +23,7 @@ $ kubectl exec -it client-util -n basic-kafka -- bash
 root@client-util:/#
 
 4. Start Producer and send some messages
-$ kafkacat -P -b "kfk1" -t "mytopic"
+$ kafkacat -P -b "kfk1,kfk2,kfk3" -t "mytopic1"
 
 $ message1
 $ message2
@@ -34,14 +34,14 @@ $ kubectl exec -it client-util -n basic-kafka -- bash
 root@client-util:/#
 
 6. Start Consumer 1 in new terminal
-$ kafkacat -C -b "kfk1,kfk2,kfk3" -G mygroup mytopic
+$ kafkacat -C -b "kfk1,kfk2,kfk3" -G mygroup mytopic1
 
 7. Open another tab in terminal, then exec into client-util shell
 $ kubectl exec -it client-util -n basic-kafka -- bash
 root@client-util:/#
 
 8. Start Consumer 2 in new terminal
-$ kafkacat -C -b "kfk1" -G mygroup mytopic
+$ kafkacat -C -b "kfk1,kfk2,kfk3" -G mygroup mytopic1
 
 9. Send some more messages in Producer
 $ message4
