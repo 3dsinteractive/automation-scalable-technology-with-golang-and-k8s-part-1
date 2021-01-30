@@ -98,7 +98,7 @@ pod/client-util created
 $ kubectl exec -it client-util -n basic-kafka -- bash
 
 14. Run kafkacat -L to list brokers and topics
-# kafkacat -b kfk1 -L
+# kafkacat -b "kfk1,kfk2,kfk3" -L
 Metadata for all topics (from broker -1: kfk1:9092/bootstrap):
  3 brokers:
   broker 2 at kfk2:9092
