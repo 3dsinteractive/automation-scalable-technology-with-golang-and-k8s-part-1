@@ -20,7 +20,6 @@ type IMicroservice interface {
 
 	// Consumer Services
 	Consume(servers string, topic string, groupID string, h ServiceHandleFunc) error
-	// ConsumeBatch(servers string, topic string, groupID string, batchSize int, batchTimeout time.Duration, h ServiceHandleFunc) error
 }
 
 // Microservice is the centralized service management
