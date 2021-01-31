@@ -29,10 +29,12 @@ type IMicroservice interface {
 	DELETE(path string, h ServiceHandleFunc)
 
 	// Consumer Services
-	Consume(servers string, topic string, groupID string, readTimeout time.Duration, h ServiceHandleFunc) error
+	Consume(servers string, topic string, groupID string, readTimeout time.Duration,
+		h ServiceHandleFunc) error
 
 	// Batch Consumer Services
-	ConsumeBatch(servers string, topic string, groupID string, readTimeout time.Duration, batchSize int, batchTimeout time.Duration, h ServiceHandleFunc) error
+	ConsumeBatch(servers string, topic string, groupID string, readTimeout time.Duration,
+		batchSize int, batchTimeout time.Duration, h ServiceHandleFunc) error
 
 	// Scheduler Services
 	Schedule(timer time.Duration, h ServiceHandleFunc) chan bool /*exit channel*/
