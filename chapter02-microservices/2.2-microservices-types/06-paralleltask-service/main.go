@@ -16,12 +16,13 @@ func main() {
 	// 1. Start PTask endpoint
 	ms.PTaskEndpoint("/citizen/batch", cacheServer, mqServers)
 
-	// 2. Start 3 workers
-	for i := 0; i < 3; i++ {
+	// 2. Start 2 worker nodes
+	for i := 0; i < 2; i++ {
 		ms.PTaskWorkerNode("/citizen/batch", cacheServer, mqServers, func(ctx IContext) error {
 			ctx.Log(ctx.ReadInput())
+			resStr := randString()
 			res := map[string]interface{}{
-				"id": "123",
+				"result": resStr,
 			}
 			n := rand.Intn(5)
 			time.Sleep(time.Duration(n) * time.Second)

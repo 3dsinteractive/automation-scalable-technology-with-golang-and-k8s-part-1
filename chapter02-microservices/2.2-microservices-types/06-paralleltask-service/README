@@ -22,11 +22,11 @@ $ go build .
 $ ./main
 
 5. Run command
-$ curl -X POST "localhost:8080/citizen/batch?task_id=12345&worker_count=5" -d '{"input1":"value1"}'
-{"task_id":"1234"}
+$ curl -X POST "localhost:8080/citizen/batch?task_id=email_a&worker_count=5" -d '{"input1":"value1"}'
+{"task_id":"email_a"}
 
 6. Run command
-$ curl -X GET "localhost:8080/citizen/batch?task_id=12345"
+$ curl -X GET "localhost:8080/citizen/batch?task_id=email_a"
 
 {
   "status": "complete",
@@ -35,46 +35,46 @@ $ curl -X GET "localhost:8080/citizen/batch?task_id=12345"
       "code": 200,
       "error": "",
       "response": {
-        "id": "123"
+        "result": "123"
       },
       "status": "complete",
-      "worker_id": "ptask-12345-4751997750760398084"
+      "worker_id": "ptask-email_a-4751997750760398084"
     },
     {
       "code": 200,
       "error": "",
       "response": {
-        "id": "123"
+        "result": "123"
       },
       "status": "complete",
-      "worker_id": "ptask-12345-7504504064263669287"
+      "worker_id": "ptask-email_a-7504504064263669287"
     },
     {
       "code": 200,
       "error": "",
       "response": {
-        "id": "123"
+        "result": "123"
       },
       "status": "complete",
-      "worker_id": "ptask-12345-1976235410884491574"
+      "worker_id": "ptask-email_a-1976235410884491574"
     },
     {
       "code": 200,
       "error": "",
       "response": {
-        "id": "123"
+        "result": "123"
       },
       "status": "complete",
-      "worker_id": "ptask-12345-3510942875414458836"
+      "worker_id": "ptask-email_a-3510942875414458836"
     },
     {
       "code": 200,
       "error": "",
       "response": {
-        "id": "123"
+        "result": "123"
       },
       "status": "complete",
-      "worker_id": "ptask-12345-2933568871211445515"
+      "worker_id": "ptask-email_a-2933568871211445515"
     }
   ]
 }
