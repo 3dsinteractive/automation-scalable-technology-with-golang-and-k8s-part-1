@@ -60,8 +60,8 @@ func NewMicroservice() *Microservice {
 	}
 }
 
-// ptaskWorker register worker for ParallelTask
-func (ms *Microservice) PTaskWorkerNode(path string, cacheServer string, mqServers string, h ServiceHandleFunc) {
+// ptaskWorkerNode register worker node for ParallelTask
+func (ms *Microservice) ptaskWorkerNode(path string, cacheServer string, mqServers string, h ServiceHandleFunc) {
 	topic := escapeName("ptask", path)
 	mq := NewMQ(mqServers, ms)
 	err := mq.CreateTopicR(topic, 5, 1, time.Hour*24*30)
@@ -84,9 +84,9 @@ func (ms *Microservice) PTaskWorkerNode(path string, cacheServer string, mqServe
 	})
 }
 
-// PTaskWorker register workers for ParallelTask
+// PTaskWorkerNode register workers for ParallelTask
 func (ms *Microservice) PTaskWorkerNode(path string, cacheServer string, mqServers string, h ServiceHandleFunc) {
-	go ms.PTaskWorkerNode(path, cacheServer, mqServers, h)
+	go ms.ptaskWorkerNode(path, cacheServer, mqServers, h)
 }
 
 func (ms *Microservice) handlePTaskPOST(path string, cacheServer string, mqServers string, ctx IContext) error {
