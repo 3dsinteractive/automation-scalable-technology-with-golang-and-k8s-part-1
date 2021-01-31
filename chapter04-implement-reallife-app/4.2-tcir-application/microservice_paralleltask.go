@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-// ptaskWorker register worker for ParallelTask
+// ptaskWorker register worker node for ParallelTask
 func (ms *Microservice) ptaskWorkerNode(path string, cacheServer string, mqServers string, h ServiceHandleFunc) {
 	topic := escapeName("ptask", path)
 	mq := NewMQ(mqServers, ms)
@@ -33,7 +33,7 @@ func (ms *Microservice) ptaskWorkerNode(path string, cacheServer string, mqServe
 	})
 }
 
-// PTaskWorkerNode register workers for ParallelTask
+// PTaskWorkerNode register worker node for ParallelTask
 func (ms *Microservice) PTaskWorkerNode(path string, cacheServer string, mqServers string, h ServiceHandleFunc) {
 	go ms.ptaskWorkerNode(path, cacheServer, mqServers, h)
 }
