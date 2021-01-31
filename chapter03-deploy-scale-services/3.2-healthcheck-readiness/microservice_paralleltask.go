@@ -10,7 +10,7 @@ import (
 )
 
 // ptaskWorker register worker for ParallelTask
-func (ms *Microservice) ptaskWorker(path string, cacheServer string, mqServers string, h ServiceHandleFunc) {
+func (ms *Microservice) PTaskWorkerNode(path string, cacheServer string, mqServers string, h ServiceHandleFunc) {
 	topic := escapeName("ptask", path)
 	mq := NewMQ(mqServers, ms)
 	err := mq.CreateTopicR(topic, 5, 1, time.Hour*24*30)
@@ -34,8 +34,8 @@ func (ms *Microservice) ptaskWorker(path string, cacheServer string, mqServers s
 }
 
 // PTaskWorker register workers for ParallelTask
-func (ms *Microservice) PTaskWorker(path string, cacheServer string, mqServers string, h ServiceHandleFunc) {
-	go ms.ptaskWorker(path, cacheServer, mqServers, h)
+func (ms *Microservice) PTaskWorkerNode(path string, cacheServer string, mqServers string, h ServiceHandleFunc) {
+	go ms.PTaskWorkerNode(path, cacheServer, mqServers, h)
 }
 
 func (ms *Microservice) handlePTaskPOST(path string, cacheServer string, mqServers string, ctx IContext) error {
@@ -153,7 +153,7 @@ func (ms *Microservice) handlePTaskGET(path string, cacheServer string, mqServer
 }
 
 // PTask register handler to start/stop/status ParallelTask
-func (ms *Microservice) PTask(path string, cacheServer string, mqServers string) {
+func (ms *Microservice) PTaskEndpoint(path string, cacheServer string, mqServers string) {
 	// Start PTask
 	ms.POST(path, func(ctx IContext) error {
 		return ms.handlePTaskPOST(path, cacheServer, mqServers, ctx)

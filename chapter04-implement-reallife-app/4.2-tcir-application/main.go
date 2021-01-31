@@ -25,7 +25,7 @@ func main() {
 	case "batch-ptask-api":
 		startBatchPTaskAPI(ms, cfg)
 	case "batch-ptask-worker":
-		startBatchPTaskWorker(ms, cfg)
+		startBatchPTaskWorkerNode(ms, cfg)
 	case "external-api":
 		start3rdPartyMockAPI(ms, cfg)
 	}
@@ -147,11 +147,11 @@ func startBatchScheduler(ms *Microservice, cfg IConfig) {
 }
 
 func startBatchPTaskAPI(ms *Microservice, cfg IConfig) {
-	ms.PTask("/ptask/delivery", cfg.CacheServer(), cfg.MQServers())
+	ms.PTaskEndpoint("/ptask/delivery", cfg.CacheServer(), cfg.MQServers())
 }
 
-func startBatchPTaskWorker(ms *Microservice, cfg IConfig) {
-	ms.PTaskWorker("/ptask/delivery",
+func startBatchPTaskWorkerNode(ms *Microservice, cfg IConfig) {
+	ms.PTaskWorkerNode("/ptask/delivery",
 		cfg.CacheServer(),
 		cfg.MQServers(),
 		func(ctx IContext) error {

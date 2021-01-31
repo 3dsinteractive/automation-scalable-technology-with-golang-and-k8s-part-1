@@ -150,11 +150,11 @@ func startAsyncTask(ms *Microservice) {
 func startParallelTask(ms *Microservice) {
 	cacheServer := "localhost:6379"
 	mqServers := "localhost:9094"
-	ms.PTask("/citizen/batch", cacheServer, mqServers)
+	ms.PTaskEndpoint("/citizen/batch", cacheServer, mqServers)
 
 	// Start 3 workers
 	for i := 0; i < 3; i++ {
-		ms.PTaskWorker("/citizen/batch", cacheServer, mqServers, func(ctx IContext) error {
+		ms.PTaskWorkerNode("/citizen/batch", cacheServer, mqServers, func(ctx IContext) error {
 			ctx.Log(ctx.ReadInput())
 			res := map[string]interface{}{
 				"id": "123",

@@ -42,8 +42,8 @@ type IMicroservice interface {
 	AsyncPUT(path string, cacheServer string, mqServers string, h ServiceHandleFunc)
 
 	// ParallelTask Services
-	PTaskWorker(path string, cacheServer string, mqServers string, h ServiceHandleFunc)
-	PTask(path string, cacheServer string, mqServers string)
+	PTaskWorkerNode(path string, cacheServer string, mqServers string, h ServiceHandleFunc)
+	PTaskEndpoint(path string, cacheServer string, mqServers string)
 
 	// Healthcheck
 	RegisterLivenessProbeEndpoint(path string)
