@@ -169,11 +169,12 @@ func startBatchPTaskWorkerNode(ms *Microservice, cfg IConfig) {
 					for _, input := range inputs {
 						newCtx.Log("Deliver to " + input)
 					}
-
-					newMS.Stop()
 					return nil
 				})
 			newMS.Start()
+
+			ctx.Response(http.StatusOK, map[string]interface{}{"status": "success"})
+
 			return nil
 		})
 }
