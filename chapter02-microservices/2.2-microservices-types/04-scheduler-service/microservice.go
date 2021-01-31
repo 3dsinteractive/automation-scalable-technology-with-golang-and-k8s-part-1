@@ -52,16 +52,10 @@ func (ms *Microservice) Start() error {
 			// if exitHTTP != nil {
 			// 	exitHTTP <- true
 			// }
-			// for i := 0; i < scN; i++ {
-			// 	exitSC <- true
-			// }
 			exit = true
 		case <-ms.exitChannel:
 			// if exitHTTP != nil {
 			// 	exitHTTP <- true
-			// }
-			// for i := 0; i < scN; i++ {
-			// 	exitSC <- true
 			// }
 			exit = true
 		}

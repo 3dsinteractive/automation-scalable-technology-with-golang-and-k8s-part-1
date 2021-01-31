@@ -11,7 +11,7 @@ func main() {
 
 	timer := 1 * time.Second
 	exitScheduler := ms.Schedule(timer, func(ctx IContext) error {
-		now := time.Now()
+		now := ctx.Now()
 		ctx.Log(fmt.Sprintf("Tick at %s", now.Format("15:04:05")))
 		return nil
 	})
