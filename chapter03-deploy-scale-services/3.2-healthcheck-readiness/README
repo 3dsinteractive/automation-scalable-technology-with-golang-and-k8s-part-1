@@ -27,9 +27,8 @@ This will build the Dockerfile and push image to [your-docker-repository-name]/a
 8. Run command 
 $ cd k8s
 
-9. Run command
-$ kubectl apply -f 00-namespace.yml
-$ kubectl apply -f 01-redis.yml
+9. Run command to start databases
+$ kubectl apply -f 00-databases/.
 
 ** Wait until redis is OK
 
@@ -38,8 +37,8 @@ $ kubectl get po -n healthcheck
 NAME                     READY   STATUS    RESTARTS   AGE
 redis-577d58dd6c-c6595   1/1     Running   0          3m55s
 
-11. Run command to apply all services
-$ kubectl apply -f .
+11. Run command to start application
+$ kubectl apply -f 01-application/.
 
 12. Run command to make sure all services is OK
 $ kubectl get po -n healthcheck
@@ -47,34 +46,24 @@ register-api-758f494ccd-7xqmx   1/1     Running   0          109s
 register-api-758f494ccd-gbtdg   1/1     Running   0          109s
 
 13. Run command
-$ kubectl get svc -n healthcheck
-NAME           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
-register-api   ClusterIP   10.103.76.235   <none>        8080/TCP   2m38s
-
-14. Run command
-$ kubectl get ing -n healthcheck
-NAME      CLASS    HOSTS                        ADDRESS     PORTS   AGE
-ingress   <none>   kubernetes.docker.internal   localhost   80      91s
-
-15. Run command
 $ curl -X POST "http://kubernetes.docker.internal/citizen"
 {"status":"success"}
 
-16. Run command 
+14. Run command 
 $ watch "kubectl get po -n healthcheck"
 
-17. Open other terminal and Run command to kill redis
+15. Open other terminal and Run command to kill redis
 $ kubectl delete -f 01-redis.yml
 
-17. Wait to see service healthcheck fail
+16. Wait to see service healthcheck fail
 ** Notice RESTARTS will increase
 
-18. Run command to get redis back
+17. Run command to get redis back
 $ kubectl apply -f 01-redis.yml
 
-19. Wait to see service come back
+18. Wait to see service come back
 
-20. Explain healthcheck endpoint in sourcecode
+19. Explain healthcheck endpoint in sourcecode
 
-21. Run command
+20. Run command
 $ kubectl delete ns healthcheck
