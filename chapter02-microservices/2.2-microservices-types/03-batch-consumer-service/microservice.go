@@ -18,8 +18,7 @@ type IMicroservice interface {
 	Cleanup() error
 	Log(message string)
 
-	// Consumer Services
-	// Consume(servers string, topic string, groupID string, h ServiceHandleFunc) error
+	// Bulk Consumer Services
 	ConsumeBatch(servers string, topic string, groupID string, batchSize int, batchTimeout time.Duration, h ServiceHandleFunc) error
 }
 
@@ -178,16 +177,10 @@ func (ms *Microservice) Start() error {
 			// if exitHTTP != nil {
 			// 	exitHTTP <- true
 			// }
-			// for i := 0; i < scN; i++ {
-			// 	exitSC <- true
-			// }
 			exit = true
 		case <-ms.exitChannel:
 			// if exitHTTP != nil {
 			// 	exitHTTP <- true
-			// }
-			// for i := 0; i < scN; i++ {
-			// 	exitSC <- true
 			// }
 			exit = true
 		}
