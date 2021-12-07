@@ -1,0 +1,66 @@
+## The workshop content for Automation and scalable technology using Golang and K8S workshop
+
+If you are interested in the workshop, register and join here https://bit.ly/automationtech1-web
+
+### Workshop Outline
+
+Chapter 1. Basic Knowledges
+Lesson 1.1 Basic Golang
+Workshop 1 - Install Golang
+Workshop 2 - First Program
+Workshop 3 - Variable and Types
+Workshop 4 - Conditional and Loop
+Workshop 5 - Interface and Struct
+Workshop 6 - Go routine and Channel
+
+Lesson 1.2 Basic Docker
+Workshop 7 - Install Docker
+Workshop 8 - Run Program with Docker
+Workshop 9 - Build Docker image
+Workshop 10 - Push Docker Image
+Workshop 11 - Run Docker compose
+
+Lesson 1.3 Basic Kubernetes
+Workshop 12 - Install Kubernetes
+Workshop 13 - Run Program with Kubernetes
+
+
+Lesson 1.4 Basic Redis
+Workshop 14 - Run Redis in Kubernetes
+Workshop 15 - Use redis-cli
+
+
+Lesson 1.5 Basic Kafka
+Workshop 16 - Run Kafka in Kubernetes
+Workshop 17 - Play with Consumer and Producer
+Workshop 18 - Play with Consumer Group
+
+Chapter 2. Microservices
+Lesson 2.1 What is Services
+
+
+Lesson 2.2 Service Types
+Workshop 19 - Coding on HTTP Service
+Workshop 20 - Coding on Consumer Service
+Workshop 21 - Coding on Batch Consumer Service
+Workshop 22 - Coding on Scheduler Service
+Workshop 23 - Coding on Async Task Service
+Workshop 24 - Coding on Parallel Task Service
+
+
+Lesson 2.3 Service Startup and Teardown
+Workshop 25 - Composing service & start service & teardown service
+
+Chapter 3. Service Deployment and Scale
+Lesson 3.1 Service Deployment
+Workshop 26 - Deploy Service in Kubernetes
+Workshop 27 - Setup Service Health check
+Workshop 28 - Scale Service
+
+Chapter 4. Implement Real-life high load application
+Lesson 4.1 Thai Citizen ID Card Register (TCIR) Application architecture
+
+
+Lesson 4.2 Thai Citizen ID Card Register (TCIR) Application
+Workshop 29 - Coding, Building and Deploy TCIR Application in K8S
+Workshop 30 - Scale TCIR Application in K8S
